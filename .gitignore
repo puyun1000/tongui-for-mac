@@ -1,0 +1,30 @@
+# macOS metadata and editor state
+.DS_Store
+.AppleDouble/
+._*
+.idea/
+.vscode/
+*.swp
+# Local secrets and signing material
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.pem
+*.key
+*.mobileprovision
+# Generated builds and caches
+.build/
+build/
+dist/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+*.app/
+*.dmg
+*.app.zip
+*.log

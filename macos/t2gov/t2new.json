@@ -1,0 +1,9 @@
+{
+  "name": "Traditional Chinese (old Glyphs) to Traditional Chinese (Printed Common characters)",
+  "normalization": [
+    { "dict": { "type": "text", "file": "CJK_Compatibility_Ideographs.txt" } }
+  ],
+  "conversion_chain": [
+    { "dict": { "type": "text", "file": "GovVariants.txt" } }
+  ]
+}

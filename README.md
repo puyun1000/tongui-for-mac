@@ -1,174 +1,42 @@
-# OpenCC-Traditional Chinese to Traditional Chinese (The Chinese Government Standard)
-OpenCC开放中文转换 - 将混杂不同标准的繁体字形转换为《通用规范汉字表》（2013）的规范繁体字形
+# TongguiMac · 规范繁体字形转换器
 
-[展示说明页面](https://terrytian-tech.github.io/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/)
+**macOS 移植版 1.4.4**。提供短文本与批量文件的规范繁体字形转换，可处理 DOCX、TXT、MD、SRT、ASS/SSA、LRC、EPUB 和带文本层的 PDF。采用 Qt Widgets 桌面界面，支持拖入文件与 Finder“打开方式”。转换结果仍需人工审校。
 
-[转换方案设计说明](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/doc/%E3%80%8A%E9%80%9A%E7%94%A8%E8%A7%84%E8%8C%83%E6%B1%89%E5%AD%97%E8%A1%A8%E3%80%8B%E8%A7%84%E8%8C%83%E7%B9%81%E4%BD%93%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E.md)
+## 系统要求与安装
 
-*交流繁简转换相关问题可进QQ群：1055649831*
+Apple Silicon（arm64），macOS 13 或更新版本。最低版本来自构建设置与 PySide6 依赖要求，尚未覆盖所有支持版本实机测试。
 
-[![GitHub downloads](https://img.shields.io/github/downloads/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/total?style=flat-square)](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/releases)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards?style=flat-square&color=bc8cff&labelColor=161b22)](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/stargazers)
+在本仓库 Releases 下载对应 DMG，打开后将 `TongguiMac.app` 复制到“应用程序”。当前成品使用 ad-hoc 签名，未完成 Apple 公证；如系统阻止首次启动，可在确认来源后使用“隐私与安全性”中的允许打开操作。
 
-## 仓库介绍
-2013年国务院颁布了《通用规范汉字表》作为内地实施《中华人民共和国国家通用语言文字法》的配套规范，该表在确定内地简体字规范字形的同时，在“附件1”中收录了与之对应的繁体字形。虽然内地的输入法软件、繁简转换插件并不完全遵照该表的繁体字形，但是该表的字形被视作内地繁体出版的标准进行适用。2021年又有《古籍印刷通用字规范字形表》（GB/Z 40637—2021）颁布，但是该表存在两个重大缺陷：一是没有确立繁体正字和异体字的字表，正字、异体不作区分全部收录到字形表中；二是《通用规范汉字表》的部分字形，《古籍印刷通用字规范字形表》不收，而《古籍印刷通用字规范字形表》在法律效力上只是“指导性技术文件”，效力低于《通用规范汉字表》。因此《古籍印刷通用字规范字形表》并未广泛推广开来，繁体出版的字形依据仍然是在《通用规范汉字表》的基础上进行调整。
+## 从源码构建
 
-《通用规范汉字表》附件1《规范字与繁体字、异体字对照表》的《说明》中提到：
+需要 Apple Silicon Mac、Python 3.13 与 Xcode Command Line Tools，首次构建需要联网安装依赖。
 
->本表的编制是为了指导正确使用《通用规范汉字表》、方便古籍阅读、促进海峡两岸及港澳地区交流。繁体字和异体字的使用，遵循《中华人民共和国国家通用语言文字法》的规定。
-
-本仓库仍以《通用规范汉字表》为依据，提供基于[OpenCC](https://github.com/BYVoid/OpenCC)转换引擎的、从港/台标准以及各种标准和旧字形混杂的“繁体”到《通用规范汉字表》的规范繁体字形转换方案。本仓库创建前，从简体到《通用规范汉字表》的规范繁体字形的转换，在Github上已有成熟方案：[OpenCC 简繁转换之通用规范汉字标准](https://github.com/amorphobia/opencc-tonggui)，本仓库亦提供了基于OpenCC原版转换字表和词典、按照《通用规范汉字表》要求修订后的繁⇄简转换字表和词典，以满足基本的繁⇄简双向转换需要。具体差异可以查看[转换方案设计说明](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/doc/%E3%80%8A%E9%80%9A%E7%94%A8%E8%A7%84%E8%8C%83%E6%B1%89%E5%AD%97%E8%A1%A8%E3%80%8B%E8%A7%84%E8%8C%83%E7%B9%81%E4%BD%93%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E.md)。
-
-本仓库同时提供了一个Python转换程序，能够实现Word文档（DOC/DOCX）、文本文件（TXT、MD）、电子出版文件（EPUB）和字幕文件（SRT、ASS/SSA、LRC）的繁体字形转换，并对PDF的繁体字形转换提供有限支持。该程序亦以[OpenCC](https://github.com/BYVoid/OpenCC)作为转换引擎。该程序的更新历史可参见[「规范繁体字形转换器」更新日志](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/doc/「规范繁体字形转换器」更新历史日志.md)。
-
-## 使用说明
-> [!NOTE]
->本仓库的[Releases](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/releases)下已提供“规范繁体字形转换器”的安装包，支持Win10/Win11/Win7。Deepin/GXDE已提供deb格式安装包。您可以直接下载安装，如果你需要了解细节，再阅读以下使用说明。
-
-### 1.转换方案及配置文件说明
-OpenCC转换的配置文件存于本仓库的“t2gov”文件夹下，使用者应自行拷贝到OpenCC的方案文件夹中，具体可参照OpenCC的说明文档。基于使用者可以进行自定义/编辑转换字表、词典的考虑，“t2gov”下的字表、词典均为txt格式，并未转换为ocd2格式。使用者可以调用OpenCC自行转换为ocd2，转换后应相应编辑json文件令其使用ocd2。
-
-本仓库提供了五种转换方案：繁体转换为规范繁体、只转换繁体旧字形到新字形、繁体转换为简体、只将异体字转换为简体、简体转换为规范繁体。目前的所有转换方案都适用于 OpenCC 1.3.2* 及以上版本。
-
-* OpenCC 1.3.2 版本新增了 `CJK_Compatibility_Ideographs.txt` 作为 CJK 相容表意文字正规化预处理字表，以下所有转换方案亦会使用该文件。
-
-繁体转换为规范繁体的方案文件为 `t2gov.json` ，字表*文件名为 `TGCharacters.txt` ，词典文件名为 `TGPhrases.txt` 。
-
->考虑到部分繁体文档是使用内地的输入法软件打出来的，存在不少繁简混杂的情形，因此字表（`TGCharacters.txt`）加入了多组简→规范繁体的转换以改善繁简混杂的状态。如果使用者转换的文档本身就包含简体内容，那么应使用 `t2gov_keep_simp.json` 作为方案文件，`TGCharacters_keep_simp.txt` 作为字表。但是命中OpenCC转换词典的简体字仍然会被转换，使用后请注意校对。
-
-只转换繁体旧字形到新字形的方案文件为 `t2new.json` ，字表文件名为 `GovVariants.txt` 。这个方案会保留大部分异体字不转换。
-
->考虑到部分繁体文档是使用内地的输入法软件打出来的，存在不少繁简混杂的情形，因此该方案的字表（`GovVariants.txt`）也加入了多组简→规范繁体的转换以改善繁简混杂的状态。如果使用者转换的文档本身就包含简体内容，那么应使用 `t2new_keep_simp.json` 作为方案文件，`GovVariants_keep_simp.txt` 作为字表。
-
-繁体转换为简体的方案文件为 `t2s.json` ，字表文件名为 `TSCharacters.txt` ，词典文件名为 `TSPhrases.txt` 。
-
-只将异体字转换为简体的方案文件为 `v2s.json` ，字表文件名为 `VSCharacters.txt` ，词典文件名为 `VSPhrases.txt` 。
-
-简体转换为规范繁体的方案文件为 `s2t.json` ，字表文件名为 `STCharacters.txt` ，词典文件名为 `STPhrases.txt` 。
-
-### 2.规范繁体转换方案如何应用于小狼毫（Rime）输入法
-> [!NOTE]
->以下步骤系演示如何改造小狼毫（Rime）默认搭载的【朙月拼音】输入方案为规范繁体字形输出，使用者可依照类似思路改造其他由社区驱动的输入方案，但不能保证本仓库的转换方案一定适配于其他输入方案。
-
-下载“小狼毫”（Rime）输入法，并配置“小狼毫”的繁体输出模式为《通用规范汉字表》标准的字表、词库，可以使输入法输出《通用规范汉字表》标准的繁体字形。
-
-第一步：浏览器打开“小狼毫”输入法的[官方网站](https://rime.im/)，选择适合自己操作系统的版本。
-
-第二步：安装“小狼毫”输入法，按照默认配置一步步完成安装即可。
-
-第三步：将本开源仓库 rime 文件夹中的 `t2gov_keep_simp.json` 、 `TGCharacters_keep_simp.ocd2` 、 `TGPhrases.ocd2` 这三个文件保存到本地，并复制到 `C:\Program Files\Rime\weasel-0.17.4\data\opencc` 下。
-
-注意：这里的路径是以0.17.4版本在Windows环境下为例。假如安装的输入法版本是0.17.5，那么文件夹名就为 `weasel-0.17.5` 。
-
-第四步：在小狼毫的用户文件夹（Windows下的路径为`C:\Users\（你的计算机用户名）\AppData\Roaming\Rime`）下新建文本文件，写入如下内容：
-
-```bash
-# luna_pinyin.custom.yaml
-
-patch:
-  switches:
-    - name: simplification
-      reset: 1
-
-  simplifier:
-    opencc_config: t2gov_keep_simp.json
-    option_name: simplification
+```sh
+cd macos
+python3.13 -m venv .venv
+.venv/bin/python -m pip install -r requirements-lock-macos-arm64-py313.txt
+./build_mac.sh
 ```
 
-点击“文件-另存为”，文件名填写 `luna_pinyin.custom.yaml`，保存类型填写“所有文件”，编码选择“UTF-8”。
+默认 Python 路径为 `/opt/homebrew/bin/python3.13`，其他位置可用 `PYTHON_BIN=/path/to/python3.13 ./build_mac.sh` 指定。脚本建立 `.venv`，安装 `requirements-mac.txt` 中的固定版本依赖，装入随仓库提供的 OpenCC 和结巴词典，运行自检，生成 `dist/TongguiMac.app` 与 `dist/TongguiMac-1.4.4-arm64.dmg`。
 
-第五步：打开“小狼毫”输入法，在“中”字图标上点击鼠标右键，选择“重新部署”即可。
-
-### 3.使用本仓库的规范繁体转换程序
-“transformer”文件夹下提供了一套模块化的 Python 转换程序，由 `main.py` 作为程序入口统一调度，内部为 `constants.py`（版本常量）、`updater.py`（在线更新检测）、`text_converter.py`（TXT/SRT/ASS/LRC 转换与编码检测）、`epub_converter.py`（EPUB转换模块）和 `doc_converter.py`（Word 文档转换）五个模块*。如果使用者希望从源码自行部署转换程序，可以按以下说明操作。
-
-* AI转换模块作为第三方库引入，不进入主仓库的 Git 历史，亦不受 Apache 2.0 许可证覆盖。可进入 [LLMCC](https://github.com/TerryTian-tech/LLMCC) 仓库查看了解该模块详情。
-
-> [!NOTE]
->本仓库的[Releases](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/releases)下已提供“规范繁体字形转换器”的安装包，支持Win10/Win11/Win7。Deepin/GXDE已提供deb格式安装包。推荐您直接使用已经编译好的安装包。
-
-在 Windows 系统上，使用者需部署好 Python 运行环境。然后打开终端（PowerShell），执行以下命令安装依赖并运行：
-
-```bash
-git clone https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards.git
-cd OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/transformer
-pip install -r requirements.txt
-Copy-Item -Path "..\t2gov\*" -Destination "$(python -c "import opencc, os; print(os.path.join(os.path.dirname(opencc.__file__), 'clib', 'share', 'opencc'))")" -Recurse -Force
-$dest = python -c "import opencc, os; print(os.path.join(os.path.dirname(opencc.__file__), 'clib', 'share', 'opencc', 'jieba_dict'))"
-$null = New-Item -ItemType Directory -Path $dest -Force; Copy-Item -Path "..\jieba\*" -Destination $dest -Recurse -Force
-python main.py
+```sh
+.venv/bin/python self_test.py
+.venv/bin/python verify_formats.py
+dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 ```
 
-在 Linux 发行版下，可使用 “transformer-linux” 文件夹下的转换程序。该程序仅支持 DOCX 文档、文本文件、EPUB、PDF 和字幕文件的繁体字形转换，暂不支持DOC文档的转换。使用者需部署好 Python 运行环境，然后打开终端，执行以下命令安装依赖并运行：
+完整依赖锁定记录见 `macos/requirements-lock-macos-arm64-py313.txt`（验证环境）；主要依赖为 PySide6 Essentials、OpenCC、jieba、python-docx、pdf-oxide、Pillow 等。`macos/README.md` 保留移植说明。
 
-```bash
-git clone https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards.git
-cd OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/transformer-linux
-pip install -r requirements.txt
-OPENCC_DATA_ROOT=$(python3 -c "import opencc_data, os; print(os.path.dirname(opencc_data.__file__))")
-cp ../t2gov/*.txt "$OPENCC_DATA_ROOT/data/"
-cp ../t2gov/*.json "$OPENCC_DATA_ROOT/data/config/"
-mkdir -p jieba_dict
-cp -rf ../jieba/* jieba_dict/
-python3 main.py
-```
+## 上游来源、许可与致谢
 
-结巴分词支持词典位于jieba目录下，其中现代汉语分词词典来自[结巴分词仓库](https://github.com/fxsjy/jieba)，古汉语分词默认词典使用了[Dingyuan Wang](https://github.com/gumblex)制作的[jiebazhc](https://github.com/The-Orizon/nlputils)。Windows 10/11 上如需结巴分词功能，请前往OpenCC官方仓库[下载并提取](https://github.com/BYVoid/OpenCC/releases/download/ver.1.4.2/OpenCC-1.4.2-windows-x64-portable.zip) bin\plugins下的文件复制到你本地的OpenCC目录下（可运行 `pip show opencc` 命令查看OpenCC所在位置，Linux无需此步）。
+上游作者/维护者为 **[TerryTian-tech](https://github.com/TerryTian-tech)**，来源仓库：
 
-> [!NOTE]
->在Windows系统上，部分情况下转换doc文档时会出现错误提示“AttributeError: module ‘win32com.gen_py.00020905-0000-4B30-A977-D214852036FFx0x3x0’ has no attribute ‘CLSIDToClassMap’”。如出现该错误，可尝试删除C:\Users\administrator（注：此处为你的计算机用户名，默认名称为administrator或admin，如有微软账户一般则为微软账户名）\AppData\Local\Temp\gen_py\3.13(注：此处为你安装的Python版本号)下的缓存文件夹00020905-0000-4B30-A977-D214852036FFx0x3x0，再重新运行转换器。如果错误提示代号并非00020905-0000-4B30-A977-D214852036FFx0x3x0，亦可照此操作以排除故障。
+[OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards)
 
-## 特别注意
-由于《通用规范汉字表》规定的异体—正字映射关系相对简单、不完全符合实际情况，本转换方案依据《现代汉语词典》《辞海》《古代汉语词典》对部分异体字▶正字转换关系作出了调整。本方案不能视为与《通用规范汉字表》的规定完全一致。具体差异可以查看[转换方案设计说明](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/doc/%E3%80%8A%E9%80%9A%E7%94%A8%E8%A7%84%E8%8C%83%E6%B1%89%E5%AD%97%E8%A1%A8%E3%80%8B%E8%A7%84%E8%8C%83%E7%B9%81%E4%BD%93%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E.md)。
+本版基于上游提交 [`fe735503935bc6dce401ae5ce13b8e569dfa8e07`](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/commit/fe735503935bc6dce401ae5ce13b8e569dfa8e07)，由 `transformer-linux/` 移植至 `macos/`；保留上游 Git 历史、原平台源码、词典、[原始 README](doc/README-upstream.md) 与 [Apache-2.0 许可](LICENSE)。Mac 适配涉及路径、打包、编码检测和系统文件打开方式；详见 [修改说明](macos/README.md#关键移植改动)。
 
-转换字表、词典的底稿是从OpenCC的转换方案修订而来，因此可能存在极少量的用字不符合内地标准、转换存在错误。建议使用者（尤其是出版从业者）应将本方案及其附带的转换工具视为一种便利工具，而不应将本转换方案视为与黑马、方正校对后同等水平的产物。
+感谢 TerryTian-tech 提供转换程序与规则，感谢词典中署名的 Yi Jianpeng、Hu Xinmei、Duan Yatong，以及 [OpenCC / BYVoid](https://github.com/BYVoid/OpenCC)、[jieba](https://github.com/fxsjy/jieba) 和其他依赖的贡献者。各组件分别适用其自身许可，详见 [第三方声明](macos/THIRD_PARTY_NOTICES.md)。
 
-*特别感谢易建鹏老师、胡馨媚老师、段亚彤老师在字表编制过程中提出的宝贵意见。
-
-## 使用本转换方案的项目
-
-* [opencc-wasm](https://github.com/frankslin/OpenCC) （[npm](https://www.npmjs.com/package/opencc-wasm)、[演示页面](https://opencc.js.org/)）  维护者：[FranksLin](https://github.com/frankslin)
-
-* [Oh My OpenCC（简繁通转换大师）](https://github.com/TerryTian-tech/oh-my-opencc)  维护者：[TerryTian-tech](https://github.com/TerryTian-tech)
-
-* [regexp-replace-lists-for-TextPro](https://github.com/Fusyong/regexp-replace-lists-for-TextPro)  维护者：[Huang Fusyong](https://github.com/Fusyong)
-
-* [telegram-zh-Hant-CN](https://github.com/soizo/telegram-zh-Hant-CN)  维护者：[SoizoKtantas](https://github.com/soizo)
-
-* [Mainland_Traditional_Chinese_Converter](https://github.com/Xebec33/Mainland_Traditional_Chinese_Converter)  维护者：[Xebec33](https://github.com/Xebec33)
-
-* [OpenCC Gov For Rime](https://github.com/soizo/OpenCCGovForRime)  维护者：[SoizoKtantas](https://github.com/soizo)
-
-## 「规范繁体字形转换器」使用的第三方库
-
-| 组件 | 版本 | 说明 |
-|-----|------|-----|
-| [OpenCC](https://github.com/BYVoid/OpenCC) | 1.4.2 | 开源中文繁简转换库 |
-| [LLMCC](https://github.com/TerryTian-tech/LLMCC) | 0.2.6 | 「规范繁体字形转换器」AI繁简转换独立模块 |
-| [Python-docx](https://github.com/python-openxml/python-docx) | 1.2.0 | Word 文档处理库 |
-| [Pywin32](https://github.com/mhammond/pywin32) | 312 | Python for Win32 扩展 |
-| [PySide6](https://www.qt.io/qt-for-python) | 6.11.2 | Qt for Python GUI 框架 |
-| [Chardet](https://github.com/chardet/chardet) | 7.6.0 | 字符编码检测库 |
-| [Certifi](https://pypi.org/project/certifi/) | 2026.7.22 | Mozilla 根证书库 |
-| [Beautifulsoup4](https://pypi.org/project/beautifulsoup4/) | 4.15.0 | HTML和XML文档解析库 |
-| [lxml](https://github.com/lxml/lxml) | 6.1.3 | 大型文档和XML处理库 |
-| [pdf-oxide](https://pypi.org/project/pdf-oxide/) | 0.3.78 | PDF 文件解析与重建库 |
-| [Pillow](https://python-pillow.github.io/) | 12.3.0 | 图像处理库，用于 PDF 扫描页栅格化保留 |
-
-> [!NOTE]
->Win7版本的第三方库使用情况请参见仓库的 requirements.txt 文件。
-
-## Contributors 开源贡献者
-
-由于本仓库同时在 [Gitee](https://gitee.com/terrytian-tech/tonggui-traditional-chinese) 和 [GitCode](https://gitcode.com/TerryTian-tech/OpenCC-Tonggui-Traditional-Chinese) 平台托管，特此将所有平台的开源贡献者列表如下：
-
-* [TerryTian-tech](https://github.com/TerryTian-tech)
-
-* [FranksLin](https://github.com/frankslin)
-
-## 许可协议
-
-[Apache License 2.0](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/blob/main/LICENSE)
-
-jieba目录下的 `jieba.dict.utf8` 来自[结巴分词仓库](https://github.com/fxsjy/jieba)，`jieba.dict.ancient.chinese.utf8` 和 `jieba.dict.ancient.chinese.traditional.utf8` 来自[Dingyuan Wang](https://github.com/gumblex)制作的[jiebazhc](https://github.com/The-Orizon/nlputils)。以上文件遵循 MIT License 开源，特此说明。
+PDF 通过提取文字并重建页面处理，版式可能变化；不支持无文本层扫描 PDF、加密 EPUB、旧版 `.doc`，本移植包不含独立 LLMCC AI 模块。
