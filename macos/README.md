@@ -49,6 +49,6 @@ dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 
 ## 分发
 
-本次交付为 Apple Silicon（arm64）的 `.dmg`，镜像内有 `.app`，可复制到“应用程序”。PySide6 的 macOS 包要求 macOS 13 或更新版本；本次仅在 macOS 27.2 实测。正式公开分发前，应以开发者证书签名、公证，并在目标系统版本上再次测试。
+本次交付为 Apple Silicon（arm64）的 `.dmg`，镜像内有 `.app`，可复制到“应用程序”。**本次成品实际要求 macOS 27 或更新版本，已在 macOS 27.2 实测。** 逐个检查运行组件发现 Python、OpenSSL 等的最低目标为 27.0，PySide6/Shiboken 绑定为 15.0；原脚本及 Info.plist 的 13.0 声明不代表实际兼容性。本次未修改构建代码，支持更旧系统需更换兼容依赖后重新构建。正式公开分发前，应以开发者证书签名、公证，并在目标系统版本上再次测试。
 
 本项目改编部分保留上游 Apache-2.0 许可，见 `LICENSE`。第三方依赖各自的许可仍需在公开分发时遵守；此源码包给出了依赖版本和复现方式。

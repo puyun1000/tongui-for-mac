@@ -4,7 +4,9 @@
 
 ## 系统要求与安装
 
-Apple Silicon（arm64），macOS 13 或更新版本。最低版本来自构建设置与 PySide6 依赖要求，尚未覆盖所有支持版本实机测试。
+**本次成品要求 Apple Silicon（arm64）与 macOS 27 或更新版本，已在 macOS 27.2 验证。**
+
+逐个检查成品的 Mach-O 运行组件发现：Python、OpenSSL 等组件的最低系统目标为 27.0，PySide6/Shiboken 绑定的目标为 15.0。虽然原构建脚本及应用 Info.plist 写有 13.0，成品并不能据此宣称支持 macOS 13。本次保留原构建代码和成品；若需支持较旧 macOS，必须更换兼容依赖并重新构建、实测。
 
 在本仓库 Releases 下载对应 DMG，打开后将 `TongguiMac.app` 复制到“应用程序”。当前成品使用 ad-hoc 签名，未完成 Apple 公证；如系统阻止首次启动，可在确认来源后使用“隐私与安全性”中的允许打开操作。
 

@@ -1,0 +1,1114 @@
+[
+  {
+    "app": "tonggui",
+    "file": "Contents/MacOS/TongguiMac",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtNetwork",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libbrotlicommon.1.2.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libpyside6.abi3.6.11.dylib",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libbrotlidec.1.2.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/Python",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtSvg",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/liblcms2.2.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libpng16.16.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libssl.3.dylib",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libxcb.1.1.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libjpeg.62.4.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libfreetype.6.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libcrypto.3.dylib",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libharfbuzz.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libsharpyuv.0.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libopenjp2.2.5.4.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libavif.16.4.2.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtGui",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libz.1.3.1.zlib-ng.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libwebp.7.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libXau.6.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtDBus",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libwebpmux.3.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtWidgets",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libwebpdemux.2.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libshiboken6.abi3.6.11.dylib",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/liblzma.5.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libmpdec.4.dylib",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/7cf47097c39cf1afcee8__mypyc.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/QtCore",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/libtiff.6.dylib",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/chardet/_kernel.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/chardet/models/__init__.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/PySide6/QtWidgets.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/PySide6/QtGui.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/PySide6/QtNetwork.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/PySide6/QtCore.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/PySide6/QtDBus.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/lxml/builder.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/lxml/sax.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/lxml/_elementpath.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/lxml/objectify.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Resources/lxml/etree.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/termios.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/zlib.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/unicodedata.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_bisect.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_asyncio.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_cn.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_multibytecodec.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/xxsubtype.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_posixsubprocess.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/select.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_lzma.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/pyexpat.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/readline.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_pickle.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/array.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_struct.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_blake2.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_queue.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_posixshmem.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_sha1.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_hashlib.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/grp.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_socket.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_decimal.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_statistics.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_csv.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_ssl.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_sha3.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/fcntl.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_opcode.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_kr.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_tw.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_heapq.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_scproxy.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_md5.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_multiprocessing.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_elementtree.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_random.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/resource.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_hk.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_contextvars.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/binascii.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_json.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_bz2.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_jp.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_ctypes.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/mmap.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_datetime.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_sha2.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/math.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/python3__dot__13/lib-dynload/_codecs_iso2022.cpython-313-darwin.so",
+    "minimums": [
+      "27.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/escape.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/statistical.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/structural.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/confusion.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/orchestrator.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/language.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/validity.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/magic.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/utf1632.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/postprocess.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/utf8.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/chardet/pipeline/ascii.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/shiboken6/Shiboken.abi3.so",
+    "minimums": [
+      "15.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_imagingmath.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_imaging.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_webp.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_imagingcms.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_imagingft.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_imagingtk.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PIL/_avif.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/platforms/libqoffscreen.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/platforms/libqminimal.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/platforms/libqcocoa.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/styles/libqmacstyle.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/tls/libqsecuretransportbackend.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/tls/libqopensslbackend.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/tls/libqcertonlybackend.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/iconengines/libqsvgicon.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqgif.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqwbmp.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqwebp.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqico.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqmacheif.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqjpeg.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqtiff.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqsvg.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqicns.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqtga.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/imageformats/libqmacjp2.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/generic/libqtuiotouchplugin.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/PySide6/Qt/plugins/networkinformation/libqapplenetworkinformation.dylib",
+    "minimums": [
+      "13.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/pdf_oxide/pdf_oxide.abi3.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/lxml/html/_difflib.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  },
+  {
+    "app": "tonggui",
+    "file": "Contents/Frameworks/lxml/html/diff.cpython-313-darwin.so",
+    "minimums": [
+      "11.0"
+    ],
+    "local_dependencies": []
+  }
+]
