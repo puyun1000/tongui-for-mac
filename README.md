@@ -1,14 +1,14 @@
 # TongguiMac · 规范繁体字形转换器
 
-**macOS 移植版 1.4.4**。提供短文本与批量文件的规范繁体字形转换，可处理 DOCX、TXT、MD、SRT、ASS/SSA、LRC、EPUB 和带文本层的 PDF。采用 Qt Widgets 桌面界面，支持拖入文件与 Finder“打开方式”。转换结果仍需人工审校。
+**macOS 移植版 1.4.5**。提供短文本与批量文件的规范繁体字形转换，可处理 DOCX、TXT、MD、SRT、ASS/SSA、LRC、EPUB 和带文本层的 PDF。采用 Qt Widgets 桌面界面，支持拖入文件与 Finder“打开方式”。DOCX 文本框转换、EPUB 跨标签词组处理和 EPUB 2 目录转换同步上游 1.4.5。转换结果仍需人工审校。
 
 ## 系统要求与安装
 
 **本次成品要求 Apple Silicon（arm64）与 macOS 27 或更新版本，已在 macOS 27.2 验证。**
 
-逐个检查成品的 Mach-O 运行组件发现：Python、OpenSSL 等组件的最低系统目标为 27.0，PySide6/Shiboken 绑定的目标为 15.0。虽然原构建脚本及应用 Info.plist 写有 13.0，成品并不能据此宣称支持 macOS 13。本次保留原构建代码和成品；若需支持较旧 macOS，必须更换兼容依赖并重新构建、实测。
+成品内组件的最低系统目标为 macOS 27.0；应用元数据也会标明这一要求。若需支持较旧 macOS，必须更换兼容依赖并重新构建、实测。
 
-在本仓库 Releases 下载对应 DMG，打开后将 `TongguiMac.app` 复制到“应用程序”。当前成品使用 ad-hoc 签名，未完成 Apple 公证；如系统阻止首次启动，可在确认来源后使用“隐私与安全性”中的允许打开操作。
+在本仓库 Releases 下载对应 DMG，打开后将 `TongguiMac.app` 复制到“应用程序”。镜像也附带第三方依赖的声明和许可文本。当前成品使用 ad-hoc 签名，未完成 Apple 公证；如系统阻止首次启动，可在确认来源后使用“隐私与安全性”中的允许打开操作。
 
 ## 从源码构建
 
@@ -21,7 +21,7 @@ python3.13 -m venv .venv
 ./build_mac.sh
 ```
 
-默认 Python 路径为 `/opt/homebrew/bin/python3.13`，其他位置可用 `PYTHON_BIN=/path/to/python3.13 ./build_mac.sh` 指定。脚本建立 `.venv`，安装 `requirements-mac.txt` 中的固定版本依赖，装入随仓库提供的 OpenCC 和结巴词典，运行自检，生成 `dist/TongguiMac.app` 与 `dist/TongguiMac-1.4.4-arm64.dmg`。
+默认 Python 路径为 `/opt/homebrew/bin/python3.13`，其他位置可用 `PYTHON_BIN=/path/to/python3.13 ./build_mac.sh` 指定。脚本建立 `.venv`，安装 `requirements-mac.txt` 中的固定版本依赖，装入随仓库提供的 OpenCC 和结巴词典，运行自检，生成 `dist/TongguiMac.app` 与 `dist/TongguiMac-1.4.5-arm64.dmg`。
 
 ```sh
 .venv/bin/python self_test.py
@@ -37,7 +37,7 @@ dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 
 [OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards)
 
-本版基于上游提交 [`fe735503935bc6dce401ae5ce13b8e569dfa8e07`](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/commit/fe735503935bc6dce401ae5ce13b8e569dfa8e07)，由 `transformer-linux/` 移植至 `macos/`；保留上游 Git 历史、原平台源码、词典、[原始 README](doc/README-upstream.md) 与 [Apache-2.0 许可](LICENSE)。Mac 适配涉及路径、打包、编码检测和系统文件打开方式；详见 [修改说明](macos/README.md#关键移植改动)。
+本版基于上游 1.4.5 提交 [`aba2391859910d36f52fe0983d088216b8f10c6b`](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards/commit/aba2391859910d36f52fe0983d088216b8f10c6b)，由 `transformer-linux/` 移植至 `macos/`；保留上游 Git 历史、原平台源码、词典、[1.4.5 原始 README](doc/README-upstream.md) 与 [Apache-2.0 许可](LICENSE)。Mac 适配涉及路径、打包、编码检测和系统文件打开方式；详见 [修改说明](macos/README.md#关键移植改动)。
 
 感谢 TerryTian-tech 提供转换程序与规则，感谢词典中署名的 Yi Jianpeng、Hu Xinmei、Duan Yatong，以及 [OpenCC / BYVoid](https://github.com/BYVoid/OpenCC)、[jieba](https://github.com/fxsjy/jieba) 和其他依赖的贡献者。各组件分别适用其自身许可，详见 [第三方声明](macos/THIRD_PARTY_NOTICES.md)。
 
