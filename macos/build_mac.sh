@@ -49,6 +49,6 @@ ditto third_party_licenses "$stage_dir/Third-Party-Licenses"
 ln -s /Applications "$stage_dir/Applications"
 hdiutil create -volname '规范繁体字形转换器 1.4.5' \
   -srcfolder "$stage_dir" -format UDZO -ov \
-  "dist/TongguiMac-1.4.5-arm64.dmg"
-hdiutil verify "dist/TongguiMac-1.4.5-arm64.dmg"
-echo "Built: $PWD/dist/TongguiMac-1.4.5-arm64.dmg"
+  "dist/TongguiMac-1.4.5-macOS27-arm64.dmg"
+hdiutil verify "dist/TongguiMac-1.4.5-macOS27-arm64.dmg"
+echo "Built: $PWD/dist/TongguiMac-1.4.5-macOS27-arm64.dmg"

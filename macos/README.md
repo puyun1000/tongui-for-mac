@@ -37,7 +37,7 @@
 ./build_mac.sh
 ```
 
-脚本会创建隔离的 `.venv`、安装固定版本依赖、装入仓库词典、运行资源检查，再生成 `dist/TongguiMac.app` 和 `dist/TongguiMac-1.4.5-arm64.dmg`。如 Python 不在 `/opt/homebrew/bin/python3.13`，可设置 `PYTHON_BIN`；如已有虚拟环境，可设置 `VENV_DIR`。构建需要联网下载依赖。
+脚本会创建隔离的 `.venv`、安装固定版本依赖、装入仓库词典、运行资源检查，再生成 `dist/TongguiMac.app` 和 `dist/TongguiMac-1.4.5-macOS27-arm64.dmg`。如 Python 不在 `/opt/homebrew/bin/python3.13`，可设置 `PYTHON_BIN`；如已有虚拟环境，可设置 `VENV_DIR`。构建需要联网下载依赖。
 
 可单独验证：
 

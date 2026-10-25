@@ -21,7 +21,7 @@ python3.13 -m venv .venv
 ./build_mac.sh
 ```
 
-默认 Python 路径为 `/opt/homebrew/bin/python3.13`，其他位置可用 `PYTHON_BIN=/path/to/python3.13 ./build_mac.sh` 指定。脚本建立 `.venv`，安装 `requirements-mac.txt` 中的固定版本依赖，装入随仓库提供的 OpenCC 和结巴词典，运行自检，生成 `dist/TongguiMac.app` 与 `dist/TongguiMac-1.4.5-arm64.dmg`。
+默认 Python 路径为 `/opt/homebrew/bin/python3.13`，其他位置可用 `PYTHON_BIN=/path/to/python3.13 ./build_mac.sh` 指定。脚本建立 `.venv`，安装 `requirements-mac.txt` 中的固定版本依赖，装入随仓库提供的 OpenCC 和结巴词典，运行自检，生成 `dist/TongguiMac.app` 与 `dist/TongguiMac-1.4.5-macOS27-arm64.dmg`。
 
 ```sh
 .venv/bin/python self_test.py
