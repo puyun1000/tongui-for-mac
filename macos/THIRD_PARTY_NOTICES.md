@@ -6,7 +6,7 @@
 |---|---|---|
 | altgraph | 0.17.5 | MIT |
 | beautifulsoup4 | 4.15.0 | MIT License |
-| chardet | 7.6.0 | 0BSD |
+| chardet | 7.7.0 | 0BSD |
 | jieba | 0.42.1 | MIT |
 | lxml | 6.1.3 | BSD-3-Clause |
 | macholib | 1.16.4 | MIT |
@@ -14,7 +14,7 @@
 | opencc-py | 1.4.2 | Apache-2.0 |
 | packaging | 26.3 | Apache-2.0 OR BSD-2-Clause |
 | pdf_oxide | 0.3.78 | MIT OR Apache-2.0 |
-| pillow | 12.3.0 | MIT-CMU |
+| pillow | 13.0.0 | MIT-CMU |
 | pyinstaller | 6.22.3 | GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones) |
 | pyinstaller-hooks-contrib | 2026.8 | License :: OSI Approved :: Apache Software License; License :: OSI Approved :: GNU General Public License v2 (GPLv2) |
 | PySide6_Essentials | 6.11.2 | LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only |

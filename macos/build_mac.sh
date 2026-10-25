@@ -31,9 +31,9 @@ cp jieba/* "$data_root/jieba_dict/"
 dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 info_plist="dist/TongguiMac.app/Contents/Info.plist"
 plutil -replace CFBundleDisplayName -string '规范繁体字形转换器' "$info_plist"
-plutil -replace CFBundleShortVersionString -string '1.4.4' "$info_plist"
-plutil -replace CFBundleVersion -string '1.4.4' "$info_plist"
-plutil -replace LSMinimumSystemVersion -string '13.0' "$info_plist"
+plutil -replace CFBundleShortVersionString -string '1.4.5' "$info_plist"
+plutil -replace CFBundleVersion -string '1.4.5' "$info_plist"
+plutil -replace LSMinimumSystemVersion -string '27.0' "$info_plist"
 plutil -replace CFBundleDocumentTypes -json '[{"CFBundleTypeName":"可转换文档","CFBundleTypeExtensions":["docx","txt","md","srt","ass","ssa","lrc","epub","pdf"],"CFBundleTypeRole":"Viewer","LSHandlerRank":"Alternate"}]' "$info_plist"
 # Finder metadata added by cloud-backed folders can invalidate bundle signing.
 # Stage the release on a local temporary volume, remove Finder metadata and
@@ -44,10 +44,11 @@ find "$stage_dir/TongguiMac.app" -type d -exec xattr -d com.apple.FinderInfo {} 
 codesign --force --deep --sign - "$stage_dir/TongguiMac.app"
 codesign --verify --deep --strict "$stage_dir/TongguiMac.app"
 "$stage_dir/TongguiMac.app/Contents/MacOS/TongguiMac" --self-test
-cp README.md LICENSE "$stage_dir/"
+cp README.md LICENSE THIRD_PARTY_NOTICES.md "$stage_dir/"
+ditto third_party_licenses "$stage_dir/Third-Party-Licenses"
 ln -s /Applications "$stage_dir/Applications"
-hdiutil create -volname '规范繁体字形转换器 1.4.4' \
+hdiutil create -volname '规范繁体字形转换器 1.4.5' \
   -srcfolder "$stage_dir" -format UDZO -ov \
-  "dist/TongguiMac-1.4.4-arm64.dmg"
-hdiutil verify "dist/TongguiMac-1.4.4-arm64.dmg"
-echo "Built: $PWD/dist/TongguiMac-1.4.4-arm64.dmg"
+  "dist/TongguiMac-1.4.5-arm64.dmg"
+hdiutil verify "dist/TongguiMac-1.4.5-arm64.dmg"
+echo "Built: $PWD/dist/TongguiMac-1.4.5-arm64.dmg"

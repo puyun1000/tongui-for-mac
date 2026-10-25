@@ -1,7 +1,7 @@
 # Verified on Apple Silicon, Python 3.13.16, macOS 27.2.
 altgraph==0.17.5
 beautifulsoup4==4.15.0
-chardet==7.6.0
+chardet==7.7.0
 jieba==0.42.1
 lxml==6.1.3
 macholib==1.16.4
@@ -9,7 +9,7 @@ opencc-data==1.4.2
 opencc-py==1.4.2
 packaging==26.3
 pdf_oxide==0.3.78
-pillow==12.3.0
+pillow==13.0.0
 pip==26.2.1
 pyinstaller==6.22.3
 pyinstaller-hooks-contrib==2026.8
