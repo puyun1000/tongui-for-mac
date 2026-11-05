@@ -7,7 +7,7 @@ venv_dir="${VENV_DIR:-.venv}"
 if [[ ! -x "$venv_dir/bin/python" ]]; then
   "$python_bin" -m venv "$venv_dir"
 fi
-"$venv_dir/bin/python" -m pip install -r requirements-mac.txt
+"$venv_dir/bin/python" -m pip install -r requirements-lock-macos-arm64-py313.txt
 
 # OpenCC resolves config names inside opencc_data. Install the upstream rules
 # into this isolated build environment, then include that data in the bundle.
@@ -18,6 +18,7 @@ cp t2gov/*.json "$data_root/config/"
 cp jieba/* "$data_root/jieba_dict/"
 
 "$venv_dir/bin/python" self_test.py
+"$venv_dir/bin/python" verify_ambiguity.py
 "$venv_dir/bin/python" -m PyInstaller \
   --noconfirm --clean --windowed \
   --name TongguiMac \
@@ -31,8 +32,8 @@ cp jieba/* "$data_root/jieba_dict/"
 dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 info_plist="dist/TongguiMac.app/Contents/Info.plist"
 plutil -replace CFBundleDisplayName -string '规范繁体字形转换器' "$info_plist"
-plutil -replace CFBundleShortVersionString -string '1.4.5' "$info_plist"
-plutil -replace CFBundleVersion -string '1.4.5' "$info_plist"
+plutil -replace CFBundleShortVersionString -string '1.4.6' "$info_plist"
+plutil -replace CFBundleVersion -string '1.4.6' "$info_plist"
 plutil -replace LSMinimumSystemVersion -string '27.0' "$info_plist"
 plutil -replace CFBundleDocumentTypes -json '[{"CFBundleTypeName":"可转换文档","CFBundleTypeExtensions":["docx","txt","md","srt","ass","ssa","lrc","epub","pdf"],"CFBundleTypeRole":"Viewer","LSHandlerRank":"Alternate"}]' "$info_plist"
 # Finder metadata added by cloud-backed folders can invalidate bundle signing.
@@ -47,8 +48,8 @@ codesign --verify --deep --strict "$stage_dir/TongguiMac.app"
 cp README.md LICENSE THIRD_PARTY_NOTICES.md "$stage_dir/"
 ditto third_party_licenses "$stage_dir/Third-Party-Licenses"
 ln -s /Applications "$stage_dir/Applications"
-hdiutil create -volname '规范繁体字形转换器 1.4.5' \
+hdiutil create -volname '规范繁体字形转换器 1.4.6' \
   -srcfolder "$stage_dir" -format UDZO -ov \
-  "dist/TongguiMac-1.4.5-macOS27-arm64.dmg"
-hdiutil verify "dist/TongguiMac-1.4.5-macOS27-arm64.dmg"
-echo "Built: $PWD/dist/TongguiMac-1.4.5-macOS27-arm64.dmg"
+  "dist/TongguiMac-1.4.6-macOS27-arm64.dmg"
+hdiutil verify "dist/TongguiMac-1.4.6-macOS27-arm64.dmg"
+echo "Built: $PWD/dist/TongguiMac-1.4.6-macOS27-arm64.dmg"

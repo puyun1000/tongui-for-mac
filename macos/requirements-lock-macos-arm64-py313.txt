@@ -11,11 +11,11 @@ packaging==26.3
 pdf_oxide==0.3.78
 pillow==13.0.0
 pip==26.2.1
+pyinstaller-hooks-contrib==2026.9
 pyinstaller==6.22.3
-pyinstaller-hooks-contrib==2026.8
 PySide6_Essentials==6.11.2
 python-docx==1.2.0
-setuptools==84.0.0
+setuptools==84.2.1
 shiboken6==6.11.2
-soupsieve==3.0.3
+soupsieve==4.0.1
 typing_extensions==4.16.0
