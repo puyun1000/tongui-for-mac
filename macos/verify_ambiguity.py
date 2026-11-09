@@ -1,6 +1,6 @@
 """Verify the ambiguity engine against the bundled OpenCC conversion rules."""
 
-from ambiguity_engine import _load_config, _is_cjk, _get_opencc, convert_with_ambiguities
+from text_tab import _load_config, _is_cjk, _get_opencc, convert_with_ambiguities
 
 
 def main():

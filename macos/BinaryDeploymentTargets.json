@@ -1,5 +1,5 @@
 {
-  "release": "1.4.6",
+  "release": "1.4.8",
   "bundle_minimum_macos": "27.0",
   "architecture": "arm64",
   "mach_o_file_count": 219,

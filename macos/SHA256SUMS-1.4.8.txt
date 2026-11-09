@@ -1,0 +1,4 @@
+03995eeb0d05d7a538620c135f2328a5d5adf0d26a2c362e1147060dab43b379  BinaryDeploymentTargets.json
+12b178354be4af8f187740d17870ea1d973e92b7a313c7ba526cef0c4bd071d2  TongguiMac-1.4.8-macOS27-arm64.dmg
+3afd8e719858a647b9cd6764e4662f6735a79eb7c65bdb4ada3176c769f6fc1e  TongguiMac-1.4.8-third-party-licenses.zip
+0c55e7afddde6c93f978a96c6b65658bd88beab93cb06aaeafaf4cd962bc4417  Validation-1.4.8.md

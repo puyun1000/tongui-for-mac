@@ -274,7 +274,8 @@ class DocxTraditionalSimplifiedConverter:
         self.log(f"开始转换文档: {input_path}")
 
         # 文本框（始终）与脚注/尾注（按设置）先由 ZIP/XML 级处理。
-        temp_output = output_path + ".temp.docx"
+        with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as temp_file:
+            temp_output = temp_file.name
         pre_success = self._convert_aux_content_via_zip(input_path, temp_output)
 
         if self.is_cancelled_callback and self.is_cancelled_callback():
@@ -287,6 +288,7 @@ class DocxTraditionalSimplifiedConverter:
         else:
             self.log("预处理失败，将只转换正文内容")
             processing_file = input_path
+            os.remove(temp_output)
             temp_output = None
 
         try:

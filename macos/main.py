@@ -1,5 +1,6 @@
 import os
 import sys
+from unicodedata import normalize
 
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                              QPushButton, QTextEdit, QFileDialog, QLabel, QProgressBar,
@@ -11,6 +12,8 @@ from mac_opencc import OpenCC
 from text_tab import AmbiguityOutputEdit, TextConversionWorker
 
 from constants import VERSION
+
+SUPPORTED_EXTENSIONS = {".docx", ".txt", ".md", ".srt", ".ass", ".ssa", ".lrc", ".epub", ".pdf"}
 
 CONVERSION_TYPES = {
     "繁体转规范繁体": "t2gov",
@@ -1554,21 +1557,65 @@ class ModernUI(QMainWindow):
                 QMessageBox.critical(self, "错误", "输入路径不存在")
                 return
 
-        source_paths = self.selected_files or ([input_path] if os.path.isfile(input_path) else [
-            os.path.join(input_path, name) for name in os.listdir(input_path)
-            if os.path.splitext(name)[1].lower() in {'.docx', '.txt', '.md', '.srt', '.ass', '.ssa', '.lrc', '.epub', '.pdf'}
-        ])
-        names = [f"convert_{os.path.basename(path)}" for path in source_paths]
-        if len(names) != len(set(names)):
-            QMessageBox.warning(self, "文件重名", "选中的文件含有相同名称，请分批转换，以免结果互相覆盖。")
+        try:
+            if self.selected_files:
+                source_paths = list(self.selected_files)
+            elif os.path.isdir(input_path):
+                with os.scandir(input_path) as entries:
+                    source_paths = [
+                        entry.path for entry in entries
+                        if os.path.splitext(entry.name)[1].lower() in SUPPORTED_EXTENSIONS
+                        and entry.is_file()
+                    ]
+            else:
+                source_paths = [input_path]
+
+            source_paths = [
+                path for path in source_paths
+                if os.path.isfile(path) and os.path.splitext(path)[1].lower() in SUPPORTED_EXTENSIONS
+            ]
+            if not source_paths:
+                QMessageBox.warning(self, "没有可转换文件", "请选择受支持的文档或包含受支持文档的文件夹。")
+                return
+
+            names = [f"convert_{os.path.basename(path)}" for path in source_paths]
+            # macOS 常用文件系统可能忽略大小写和 Unicode 组合形式。
+            name_keys = {normalize("NFC", name).casefold() for name in names}
+            if len(names) != len(name_keys):
+                QMessageBox.warning(self, "文件重名", "本批文件会生成同名结果，请分批转换或改用不同的输出文件夹。")
+                return
+
+            source_ids = {(st.st_dev, st.st_ino) for st in map(os.stat, source_paths)}
+            existing = []
+            for name in names:
+                destination = os.path.join(output_path, name)
+                if not os.path.lexists(destination):
+                    continue
+                if os.path.islink(destination) or not os.path.isfile(destination):
+                    QMessageBox.warning(self, "输出路径冲突", f"请选择其他输出文件夹：{name}")
+                    return
+                st = os.stat(destination)
+                if (st.st_dev, st.st_ino) in source_ids:
+                    QMessageBox.warning(self, "输出与原件冲突", f"为保护原件，请选择其他输出文件夹：{name}")
+                    return
+                existing.append(name)
+        except OSError as exc:
+            QMessageBox.warning(self, "无法检查文件", str(exc))
             return
-        existing = [name for name in names if os.path.exists(os.path.join(output_path, name))]
+
         if existing:
-            answer = QMessageBox.question(
-                self, "已有转换结果", f"输出文件夹中已有 {len(existing)} 个同名结果。继续会覆盖这些结果，是否继续？",
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                QMessageBox.StandardButton.No)
-            if answer != QMessageBox.StandardButton.Yes:
+            preview = "\n".join(existing[:10])
+            if len(existing) > 10:
+                preview += f"\n…（共 {len(existing)} 个文件）"
+            dialog = QMessageBox(QMessageBox.Icon.Question, "已有转换结果",
+                                 f"以下结果已存在，是否覆盖？\n\n{preview}",
+                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, self)
+            dialog.button(QMessageBox.StandardButton.Yes).setText("覆盖")
+            dialog.button(QMessageBox.StandardButton.No).setText("取消")
+            dialog.setDefaultButton(QMessageBox.StandardButton.No)
+            dialog.setEscapeButton(QMessageBox.StandardButton.No)
+            dialog.setTextFormat(Qt.TextFormat.PlainText)
+            if dialog.exec() != QMessageBox.StandardButton.Yes:
                 return
 
         # 获取转换类型
@@ -1626,7 +1673,7 @@ class ModernUI(QMainWindow):
             convert_footnotes,  # 使用复选框的实际值
             force_encoding,
             segment_mode,
-            input_paths=self.selected_files if self.selected_files else None,
+            input_paths=source_paths,
             highlight_pdf=highlight_pdf
         )
         self.worker.progress_updated.connect(self.update_progress)
