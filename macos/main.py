@@ -5,7 +5,7 @@ from unicodedata import normalize
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                              QPushButton, QTextEdit, QFileDialog, QLabel, QProgressBar,
                              QMessageBox, QGroupBox, QComboBox, QCheckBox, QLineEdit,
-                             QTabWidget, QMenu)
+                             QMenu, QFrame, QScrollArea, QStackedWidget, QButtonGroup, QSizePolicy)
 from PySide6.QtCore import Qt, QThread, Signal, QSettings, QEvent
 from PySide6.QtGui import (QIcon, QColor, QPalette, QKeySequence, QAction, QShortcut, QFont)
 from mac_opencc import OpenCC
@@ -457,49 +457,83 @@ class ModernUI(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        # 设置窗口属性，版本号使用 VERSION 常量
-        self.setWindowTitle(f"规范繁体字形转换器 V{VERSION} for Mac")
-        self.setGeometry(100, 100, 900, 750)
-        self.setMinimumSize(800, 600)
+        self.setWindowTitle("规范繁体字形转换器")
+        self.resize(1000, 730)
+        self.setMinimumSize(760, 570)
         self.setAcceptDrops(True)
-
-        # 设置窗口图标 - 新增的logo功能
         self.setWindowIcon(QIcon(self.get_logo_path()))
-
-        # 应用默认主题
         self.apply_theme(self.current_theme)
 
-        # 创建主窗口部件
-        main_widget = QWidget()
-        self.setCentralWidget(main_widget)
+        root = QWidget()
+        root.setObjectName("workspace")
+        self.setCentralWidget(root)
+        layout = QHBoxLayout(root)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
 
-        # 创建主布局
-        main_layout = QVBoxLayout(main_widget)
-        main_layout.setSpacing(15)
+        sidebar = QFrame()
+        sidebar.setObjectName("sidebar")
+        sidebar.setFixedWidth(164)
+        nav = QVBoxLayout(sidebar)
+        nav.setContentsMargins(14, 24, 14, 16)
+        nav.setSpacing(7)
+        brand = QLabel("通规 · Mac")
+        brand.setObjectName("brand")
+        nav.addWidget(brand)
+        nav.addSpacing(18)
+        layout.addWidget(sidebar)
 
-        # 标题区域
-        title_label = QLabel("规范繁体字形转换器")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setObjectName("titleLabel")
-        main_layout.addWidget(title_label)
-
-        # 创建选项卡
-        tab_widget = QTabWidget()
-        tab_widget.addTab(self.create_conversion_tab(), "文件转换")
-        tab_widget.addTab(self.create_text_tab(), "文字转换")
-        tab_widget.addTab(self.create_settings_tab(), "设置")
-        tab_widget.addTab(self.create_about_tab(), "关于")
-        main_layout.addWidget(tab_widget)
-
-        # 状态栏
+        self.pages = QStackedWidget()
+        layout.addWidget(self.pages, 1)
+        self.navigation = QButtonGroup(self)
+        for index, (name, page) in enumerate((
+            ("文件转换", self.create_conversion_tab()),
+            ("文字转换", self.create_text_tab()),
+            ("设置", self.scroll_page(self.create_settings_tab())),
+            ("关于", self.scroll_page(self.create_about_tab())),
+        )):
+            self.pages.addWidget(page)
+            button = QPushButton(name)
+            button.setObjectName("navigation")
+            button.setCheckable(True)
+            self.navigation.addButton(button, index)
+            if index == 2:
+                nav.addStretch()
+            nav.addWidget(button)
+        self.navigation.idClicked.connect(self.pages.setCurrentIndex)
+        self.navigation.button(0).setChecked(True)
+        settings_action = QAction("设置…", self)
+        settings_action.setMenuRole(QAction.MenuRole.PreferencesRole)
+        settings_action.setShortcut(QKeySequence(QKeySequence.StandardKey.Preferences))
+        settings_action.triggered.connect(lambda: self.navigation.button(2).click())
+        self.menuBar().addMenu("应用").addAction(settings_action)
         self.statusBar().showMessage("就绪")
+
+    @staticmethod
+    def scroll_page(content):
+        scroll = QScrollArea()
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(content)
+        return scroll
+
+    @staticmethod
+    def page_heading(layout, title, description):
+        heading = QLabel(title)
+        heading.setObjectName("pageHeading")
+        layout.addWidget(heading)
+        detail = QLabel(description)
+        detail.setObjectName("muted")
+        detail.setWordWrap(True)
+        layout.addWidget(detail)
 
     def create_text_tab(self):
         """创建文字转换选项卡：顶部选转换类型与候选字显示，左侧输入、右侧输出"""
         tab = QWidget()
         layout = QVBoxLayout(tab)
         layout.setSpacing(12)
-        layout.setContentsMargins(15, 15, 15, 15)
+        layout.setContentsMargins(24, 20, 24, 18)
+        self.page_heading(layout, "文字转换", "粘贴文字，即时校对并复制转换结果。")
 
         # 顶部选项：转换类型 + 是否显示候选字 + 转换按钮
         options_group = QGroupBox("转换选项")
@@ -518,7 +552,7 @@ class ModernUI(QMainWindow):
         self.text_type_combo.currentIndexChanged.connect(self.on_text_type_changed)
         options_layout.addWidget(self.text_type_combo, 1)
 
-        self.show_candidates_cb = QCheckBox("显示候选字（红色波浪线标注歧义）")
+        self.show_candidates_cb = QCheckBox("显示候选字")
         self.show_candidates_cb.setChecked(True)
         self.show_candidates_cb.setToolTip(
             "转换结果中的一对多歧义词以红色波浪线标注，\n点击波浪线可查看该词的全部候选转换值。")
@@ -534,19 +568,19 @@ class ModernUI(QMainWindow):
 
         # 中部：左输入、右输出（两侧均为纯文本、自动换行、同一字号，保证显示对齐）
         panel_font = QFont(self.font())
-        panel_font.setPointSize(11)
+        panel_font.setPointSize(14)
 
         panels_layout = QHBoxLayout()
         panels_layout.setSpacing(12)
 
         input_group = QGroupBox("输入文字")
         input_layout = QVBoxLayout(input_group)
-        input_layout.setContentsMargins(10, 12, 10, 10)
+        input_layout.setContentsMargins(12, 19, 12, 12)
         self.text_input_edit = QTextEdit()
         self.text_input_edit.setAcceptRichText(False)  # 粘贴/拖入一律按纯文本处理
         self.text_input_edit.setLineWrapMode(QTextEdit.WidgetWidth)
         self.text_input_edit.setFont(panel_font)
-        self.text_input_edit.setPlaceholderText("输入文字，按 Ctrl+Enter 或点击“转换”开始…")
+        self.text_input_edit.setPlaceholderText("粘贴或输入文字，按 ⌘↩ 转换")
         self.text_input_edit.textChanged.connect(self.on_text_input_changed)
         for seq in (QKeySequence("Ctrl+Return"), QKeySequence("Ctrl+Enter")):
             shortcut = QShortcut(seq, self.text_input_edit)
@@ -556,7 +590,7 @@ class ModernUI(QMainWindow):
 
         output_group = QGroupBox("转换结果")
         output_layout = QVBoxLayout(output_group)
-        output_layout.setContentsMargins(10, 12, 10, 10)
+        output_layout.setContentsMargins(12, 19, 12, 12)
         self.text_output_edit = AmbiguityOutputEdit()
         self.text_output_edit.setLineWrapMode(QTextEdit.WidgetWidth)
         self.text_output_edit.setFont(panel_font)
@@ -715,8 +749,17 @@ class ModernUI(QMainWindow):
             self.input_edit.setText(self.selected_files[0] if len(self.selected_files) == 1
                                     else f"已选择 {len(self.selected_files)} 个文件")
             default_output = os.path.dirname(self.selected_files[0])
+        names = [os.path.basename(path) for path in (self.selected_files or paths)]
+        summary = "、".join(names[:3])
+        if len(names) > 3:
+            summary += f" 等 {len(names)} 个文件"
+        self.source_summary.setText(summary)
+        self.source_summary.setToolTip("\n".join(names))
+        self.source_summary.show()
         if not self.output_edit.text():
             self.output_edit.setText(default_output)
+        if hasattr(self, "navigation"):
+            self.navigation.button(0).click()
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -753,7 +796,8 @@ class ModernUI(QMainWindow):
         tab = QWidget()
         layout = QVBoxLayout(tab)
         layout.setContentsMargins(15, 15, 15, 15)
-        layout.setSpacing(20)
+        layout.setSpacing(16)
+        self.page_heading(layout, "设置", "调整外观和转换所用的默认选项。")
 
         # 主题设置区域
         theme_group = QGroupBox("主题设置")
@@ -857,11 +901,11 @@ class ModernUI(QMainWindow):
         self.no_segment_cb.stateChanged.connect(lambda state: self.on_segment_mode_changed("none", state))
 
         # 结巴分词（现代汉语）选项
-        self.jieba_modern_cb = QCheckBox("转换前使用结巴分词进行文本分词预处理")
+        self.jieba_modern_cb = QCheckBox("结巴分词 · 现代汉语")
         self.jieba_modern_cb.stateChanged.connect(lambda state: self.on_segment_mode_changed("jieba_modern", state))
 
         # 结巴分词（古汉语）选项
-        self.jieba_ancient_cb = QCheckBox("转换前使用结巴分词对古汉语文本进行分词预处理")
+        self.jieba_ancient_cb = QCheckBox("结巴分词 · 古汉语")
         self.jieba_ancient_cb.stateChanged.connect(lambda state: self.on_segment_mode_changed("jieba_ancient", state))
 
         segment_options_layout.addWidget(self.no_segment_cb)
@@ -965,333 +1009,58 @@ class ModernUI(QMainWindow):
         self.change_theme(theme)
 
     def apply_theme(self, theme):
-        """应用指定主题"""
-        if theme == "dark":
-            self.apply_dark_theme()
-        else:
-            self.apply_light_theme()
-
-    def apply_dark_theme(self):
-        """应用暗色主题"""
-        self.current_theme = "dark"
-
-        # 设置暗色调色板
-        dark_palette = QPalette()
-        dark_palette.setColor(QPalette.Window, QColor(43, 43, 43))
-        dark_palette.setColor(QPalette.WindowText, Qt.white)
-        dark_palette.setColor(QPalette.Base, QColor(30, 30, 30))
-        dark_palette.setColor(QPalette.AlternateBase, QColor(43, 43, 43))
-        dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
-        dark_palette.setColor(QPalette.ToolTipText, Qt.black)
-        dark_palette.setColor(QPalette.Text, Qt.white)
-        dark_palette.setColor(QPalette.Button, QColor(43, 43, 43))
-        dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        dark_palette.setColor(QPalette.BrightText, Qt.red)
-        dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.HighlightedText, Qt.black)
-        QApplication.instance().setPalette(dark_palette)
-
-        # 设置暗色样式表
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #2b2b2b;
-            }
-            QWidget {
-                background-color: #2b2b2b;
-                color: #ffffff;
-                font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            }
-            QPushButton {
-                background-color: #375a7f;
-                border: none;
-                color: white;
-                padding: 10px;
-                font-size: 14px;
-                border-radius: 5px;
-                min-width: 100px;
-            }
-            QPushButton:hover {
-                background-color: #4a77a8;
-            }
-            QPushButton:pressed {
-                background-color: #2c4a69;
-            }
-            QPushButton#startButton {
-                background-color: #00bc8c;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#startButton:hover {
-                background-color: #00e6ac;
-            }
-            QPushButton#aiButton {
-                background-color: #64b5f6;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#aiButton:hover {
-                background-color: #90caf9;
-            }
-            QPushButton#browseButton {
-                background-color: #3498db;
-            }
-            QPushButton#browseButton:hover {
-                background-color: #5dade2;
-            }
-            QLineEdit, QTextEdit {
-                background-color: #3c3c3c;
-                border: 1px solid #555555;
-                color: #ffffff;
-                padding: 8px;
-                border-radius: 4px;
-            }
-            QGroupBox {
-                border: 1px solid #555555;
-                border-radius: 5px;
-                margin-top: 1ex;
-                font-weight: bold;
-                color: #3498db;
-            }
-            QGroupBox::title {
-                subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 5px 0 5px;
-                color: #3498db;
-            }
-            QProgressBar {
-                border: 1px solid #555555;
-                border-radius: 5px;
-                text-align: center;
-                height: 20px;
-                color: white;
-            }
-            QProgressBar::chunk {
-                background-color: #00bc8c;
-                width: 20px;
-            }
-            QComboBox {
-                background-color: #3c3c3c;
-                border: 1px solid #555555;
-                color: #ffffff;
-                padding: 5px;
-                border-radius: 4px;
-            }
-            QComboBox::drop-down {
-                border: none;
-            }
-            QComboBox QAbstractItemView {
-                background-color: #3c3c3c;
-                color: white;
-            }
-            QLabel {
-                color: #aaaaaa;
-            }
-            QLabel#titleLabel {
-                font-size: 24px;
-                font-weight: bold;
-                color: #00bc8c;
-                margin: 10px;
-            }
-            QListWidget {
-                background-color: #3c3c3c;
-                border: 1px solid #555555;
-                color: #ffffff;
-            }
-            QCheckBox:disabled {
-                color: #777777;
-            }
-            QTabWidget::pane {
-                border: 1px solid #555555;
-                background-color: #2b2b2b;
-            }
-            QTabBar::tab {
-                background-color: #3c3c3c;
-                color: #aaaaaa;
-                padding: 8px 16px;
-                margin-right: 2px;
-            }
-            QTabBar::tab:selected {
-                background-color: #375a7f;
-                color: white;
-            }
-            QTabBar::tab:hover:!selected {
-                background-color: #4a77a8;
-            }
-
-            QPushButton#cancelButton {
-                background-color: #e74c3c;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#cancelButton:hover {
-                background-color: #c0392b;
-            }
-        """)
-
-    def apply_light_theme(self):
-        """应用浅色主题"""
-        self.current_theme = "light"
-
-        # 设置浅色调色板
-        light_palette = QPalette()
-        light_palette.setColor(QPalette.Window, QColor(240, 240, 240))
-        light_palette.setColor(QPalette.WindowText, Qt.black)
-        light_palette.setColor(QPalette.Base, Qt.white)
-        light_palette.setColor(QPalette.AlternateBase, QColor(245, 245, 245))
-        light_palette.setColor(QPalette.ToolTipBase, Qt.white)
-        light_palette.setColor(QPalette.ToolTipText, Qt.black)
-        light_palette.setColor(QPalette.Text, Qt.black)
-        light_palette.setColor(QPalette.Button, QColor(240, 240, 240))
-        light_palette.setColor(QPalette.ButtonText, Qt.black)
-        light_palette.setColor(QPalette.BrightText, Qt.red)
-        light_palette.setColor(QPalette.Link, QColor(0, 120, 215))
-        light_palette.setColor(QPalette.Highlight, QColor(0, 120, 215))
-        light_palette.setColor(QPalette.HighlightedText, Qt.white)
-        QApplication.instance().setPalette(light_palette)
-
-        # 设置浅色样式表
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #f0f0f0;
-            }
-            QWidget {
-                background-color: #f0f0f0;
-                color: #333333;
-                font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            }
-            QPushButton {
-                background-color: #4a86e8;
-                border: none;
-                color: white;
-                padding: 10px;
-                font-size: 14px;
-                border-radius: 5px;
-                min-width: 100px;
-            }
-            QPushButton:hover {
-                background-color: #6a9ce8;
-            }
-            QPushButton:pressed {
-                background-color: #3a76c8;
-            }
-            QPushButton#startButton {
-                background-color: #4caf50;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#startButton:hover {
-                background-color: #66bb6a;
-            }
-            QPushButton#aiButton {
-                background-color: #64b5f6;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#aiButton:hover {
-                background-color: #90caf9;
-            }
-            QPushButton#browseButton {
-                background-color: #2196f3;
-            }
-            QPushButton#browseButton:hover {
-                background-color: #42a5f5;
-            }
-            QLineEdit, QTextEdit {
-                background-color: white;
-                border: 1px solid #cccccc;
-                color: #333333;
-                padding: 8px;
-                border-radius: 4px;
-            }
-            QGroupBox {
-                border: 1px solid #cccccc;
-                border-radius: 5px;
-                margin-top: 1ex;
-                font-weight: bold;
-                color: #555555;
-            }
-            QGroupBox::title {
-                subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 5px 0 5px;
-                color: #555555;
-            }
-            QProgressBar {
-                border: 1px solid #cccccc;
-                border-radius: 5px;
-                text-align: center;
-                height: 20px;
-                color: #333333;
-            }
-            QProgressBar::chunk {
-                background-color: #4caf50;
-                width: 20px;
-            }
-            QComboBox {
-                background-color: white;
-                border: 1px solid #cccccc;
-                color: #333333;
-                padding: 5px;
-                border-radius: 4px;
-            }
-            QComboBox::drop-down {
-                border: none;
-            }
-            QComboBox QAbstractItemView {
-                background-color: white;
-                color: #333333;
-                border: 1px solid #cccccc;
-            }
-            QLabel {
-                color: #555555;
-            }
-            QLabel#titleLabel {
-                font-size: 24px;
-                font-weight: bold;
-                color: #4caf50;
-                margin: 10px;
-            }
-            QListWidget {
-                background-color: white;
-                border: 1px solid #cccccc;
-                color: #333333;
-            }
-            QCheckBox:disabled {
-                color: #aaaaaa;
-            }
-            QTabWidget::pane {
-                border: 1px solid #cccccc;
-                background-color: #f0f0f0;
-            }
-            QTabBar::tab {
-                background-color: #e0e0e0;
-                color: #555555;
-                padding: 8px 16px;
-                margin-right: 2px;
-            }
-            QTabBar::tab:selected {
-                background-color: #4a86e8;
-                color: white;
-            }
-            QTabBar::tab:hover:!selected {
-                background-color: #d0d0d0;
-            }
-
-            QPushButton#cancelButton {
-                background-color: #e74c3c;
-                font-weight: bold;
-                padding: 12px;
-                font-size: 16px;
-            }
-            QPushButton#cancelButton:hover {
-                background-color: #c0392b;
-            }
+        dark = theme == "dark"
+        self.current_theme = "dark" if dark else "light"
+        canvas, sidebar, surface, ink, muted, border, selected = (
+            ("#1e2226", "#252a30", "#2b3137", "#edf2f6", "#b4c0ca", "#48545e", "#20465f")
+            if dark else
+            ("#f6f8fa", "#eaf0f5", "#ffffff", "#1b2936", "#4c6275", "#c6d2dc", "#cde6f8")
+        )
+        accent = "#08629b"
+        focus = "#57aee8" if dark else accent
+        palette = QApplication.style().standardPalette()
+        for role, color in (
+            (QPalette.Window, canvas), (QPalette.Base, surface), (QPalette.Text, ink),
+            (QPalette.WindowText, ink), (QPalette.ButtonText, ink), (QPalette.Button, surface),
+            (QPalette.Highlight, accent), (QPalette.HighlightedText, "#ffffff"),
+            (QPalette.PlaceholderText, muted), (QPalette.Link, focus),
+        ):
+            palette.setColor(role, QColor(color))
+        QApplication.instance().setPalette(palette)
+        self.setStyleSheet(f"""
+            QWidget#workspace {{ background: {canvas}; }}
+            QFrame#sidebar {{ background: {sidebar}; border-right: 1px solid {border}; }}
+            QLabel#brand {{ font-size: 18px; font-weight: 700; padding: 0 8px; }}
+            QLabel#pageHeading {{ font-size: 29px; font-weight: 700; }}
+            QLabel#muted {{ color: {muted}; }}
+            QPushButton#navigation {{
+                text-align: left; padding: 8px 12px; border: 1px solid transparent;
+                border-radius: 8px; background: transparent; font-weight: 500;
+            }}
+            QPushButton#navigation:hover, QPushButton#navigation:checked {{ background: {selected}; }}
+            QPushButton#navigation:checked {{ font-weight: 700; }}
+            QPushButton#navigation:focus {{ border-color: {focus}; }}
+            QGroupBox {{
+                background: {surface}; border: 1px solid {border}; border-radius: 10px;
+                margin-top: 9px; font-weight: 600;
+            }}
+            QGroupBox::title {{
+                subcontrol-origin: margin; subcontrol-position: top left;
+                left: 13px; padding: 0 5px; background: {surface};
+            }}
+            QLineEdit, QTextEdit {{
+                background: {surface}; border: 1px solid {border};
+                border-radius: 6px; padding: 5px; color: {ink};
+            }}
+            QLineEdit:focus, QTextEdit:focus {{ border-color: {focus}; }}
+            QPushButton#startButton {{
+                background: {accent}; color: white; border: 2px solid transparent;
+                border-radius: 7px; padding: 5px 16px; font-weight: 600;
+            }}
+            QPushButton#startButton:hover {{ background: #074e7c; }}
+            QPushButton#startButton:focus {{ border-color: #79c8ff; }}
+            QPushButton#startButton:disabled {{ background: {sidebar}; color: {muted}; }}
+            QFrame#actionBar {{ border-top: 1px solid {border}; background: {surface}; }}
         """)
 
     def change_theme(self, theme):
@@ -1321,127 +1090,110 @@ class ModernUI(QMainWindow):
         self.settings.setValue("pdf_highlight", self.highlight_pdf_cb.isChecked())
 
     def create_conversion_tab(self):
-        """创建转换选项卡"""
-        tab = QWidget()
-        layout = QVBoxLayout(tab)
-        layout.setSpacing(20)  # 增加垂直间距
-        layout.setContentsMargins(15, 15, 15, 15)  # 增加边距
+        page = QWidget()
+        page_layout = QVBoxLayout(page)
+        page_layout.setContentsMargins(0, 0, 0, 0)
+        page_layout.setSpacing(0)
+        content = QWidget()
+        layout = QVBoxLayout(content)
+        layout.setContentsMargins(24, 20, 24, 20)
+        layout.setSpacing(15)
+        self.page_heading(layout, "文件转换", "选择单个文件、多个文件或一个文件夹。转换结果另存到指定位置。")
 
-        # 文件选择区域
-        file_group = QGroupBox("文件选择")
-        file_layout = QVBoxLayout(file_group)
-        file_layout.setSpacing(12)  # 增加内部控件间距
-        file_layout.setContentsMargins(15, 20, 15, 15)  # 增加内边距，顶部更多
-
-        # 输入路径
-        input_layout = QHBoxLayout()
-        input_layout.setSpacing(10)
+        source = QGroupBox("1. 选择来源")
+        source_layout = QVBoxLayout(source)
+        source_layout.setContentsMargins(15, 20, 15, 13)
         self.input_edit = QLineEdit()
-        self.input_edit.setPlaceholderText("请选择要转换的文件或文件夹...")
-        input_browse_btn = QPushButton("浏览")
-        input_browse_btn.setObjectName("browseButton")
-        input_browse_btn.clicked.connect(self.browse_input)
+        self.input_edit.setPlaceholderText("拖入文件或文件夹，也可粘贴完整路径")
+        self.input_edit.setAccessibleName("输入路径")
         self.input_edit.textEdited.connect(self.on_input_edited)
-        input_layout.addWidget(QLabel("输入路径:"))
-        input_layout.addWidget(self.input_edit)
-        input_layout.addWidget(input_browse_btn)
-        file_layout.addLayout(input_layout)
+        source_layout.addWidget(self.input_edit)
+        self.source_summary = QLabel()
+        self.source_summary.setObjectName("muted")
+        self.source_summary.setWordWrap(True)
+        self.source_summary.setTextFormat(Qt.TextFormat.PlainText)
+        self.source_summary.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.source_summary.hide()
+        source_layout.addWidget(self.source_summary)
+        choices = QHBoxLayout()
+        for name, callback in (("选择文件…", self.browse_input), ("选择文件夹…", self.browse_input_folder)):
+            button = QPushButton(name)
+            button.clicked.connect(callback)
+            choices.addWidget(button)
+        choices.addStretch()
+        source_layout.addLayout(choices)
+        layout.addWidget(source)
 
-        # 输出路径
-        output_layout = QHBoxLayout()
-        output_layout.setSpacing(10)
-        self.output_edit = QLineEdit()
-        self.output_edit.setPlaceholderText("请选择输出文件夹...")
-        output_browse_btn = QPushButton("浏览")
-        output_browse_btn.setObjectName("browseButton")
-        output_browse_btn.clicked.connect(self.browse_output)
-        output_layout.addWidget(QLabel("输出路径:"))
-        output_layout.addWidget(self.output_edit)
-        output_layout.addWidget(output_browse_btn)
-        file_layout.addLayout(output_layout)
-
-        layout.addWidget(file_group)
-
-        # 转换选项区域
-        options_group = QGroupBox("转换选项")
-        options_layout = QHBoxLayout(options_group)
-        options_layout.setSpacing(30)  # 增加选项之间的水平间距
-        options_layout.setContentsMargins(15, 20, 15, 15)  # 增加内边距
-
-        # 转换类型选择
-        type_layout = QVBoxLayout()
-        type_layout.setSpacing(8)
-        type_layout.addWidget(QLabel("转换类型:"))
+        rules = QGroupBox("2. 选择转换规则")
+        rules_layout = QVBoxLayout(rules)
+        rules_layout.setContentsMargins(15, 20, 15, 13)
         self.type_combo = QComboBox()
-        self.type_combo.addItem("繁体转规范繁体")
-        self.type_combo.addItem("繁体旧字形转新字形，但保留异体字不转换")
-        self.type_combo.addItem("繁体转规范繁体，但保留文档内原有简体字")
-        self.type_combo.addItem("繁体旧字形转新字形，但保留文档内原有简体字和异体字")
-        self.type_combo.addItem("繁体转简体")
-        self.type_combo.addItem("只将异体字转为简体字")
-        self.type_combo.addItem("简体转规范繁体")
-        type_layout.addWidget(self.type_combo)
-        options_layout.addLayout(type_layout)
-
-        # 高级选项
-        advanced_layout = QVBoxLayout()
-        advanced_layout.setSpacing(10)
-
-        # 保留格式选项 - 设置为不可用
-        self.preserve_format_cb = QCheckBox("尽量保留Word文档的原有格式")
+        self.type_combo.addItems(CONVERSION_TYPES)
+        self.type_combo.setAccessibleName("文件转换规则")
+        rules_layout.addWidget(self.type_combo)
+        self.preserve_format_cb = QCheckBox("Word：尽量保留原有格式")
         self.preserve_format_cb.setChecked(True)
-        self.preserve_format_cb.setEnabled(True)  # 设置为可用
-        self.preserve_format_cb.setToolTip("是否保留Word文档的原有格式")
-
-        # 转换脚注选项 - 设置为可用
-        self.convert_footnotes_cb = QCheckBox("转换Word文档里的脚注和尾注")
+        rules_layout.addWidget(self.preserve_format_cb)
+        self.convert_footnotes_cb = QCheckBox("Word：转换脚注和尾注")
         self.convert_footnotes_cb.setChecked(True)
-        self.convert_footnotes_cb.setEnabled(True)  # 设置为可用
-        self.convert_footnotes_cb.setToolTip("是否转换文档中的脚注和尾注内容")
+        rules_layout.addWidget(self.convert_footnotes_cb)
+        layout.addWidget(rules)
 
-        advanced_layout.addWidget(self.preserve_format_cb)
-        advanced_layout.addWidget(self.convert_footnotes_cb)
-        options_layout.addLayout(advanced_layout)
+        output = QGroupBox("3. 选择输出文件夹")
+        output_layout = QVBoxLayout(output)
+        output_layout.setContentsMargins(15, 20, 15, 13)
+        row = QHBoxLayout()
+        self.output_edit = QLineEdit()
+        self.output_edit.setPlaceholderText("选择文件夹或粘贴文件夹路径")
+        self.output_edit.setAccessibleName("输出文件夹")
+        row.addWidget(self.output_edit, 1)
+        browse = QPushButton("选择位置…")
+        browse.clicked.connect(self.browse_output)
+        row.addWidget(browse)
+        output_layout.addLayout(row)
+        hint = QLabel("输出文件名自动加上 convert_ 前缀。")
+        hint.setObjectName("muted")
+        output_layout.addWidget(hint)
+        layout.addWidget(output)
+        layout.addStretch()
+        page_layout.addWidget(self.scroll_page(content), 1)
 
-        layout.addWidget(options_group)
-
-        # 控制按钮区域
-        control_layout = QHBoxLayout()
+        footer = QFrame()
+        footer.setObjectName("actionBar")
+        footer_layout = QVBoxLayout(footer)
+        footer_layout.setContentsMargins(24, 10, 24, 12)
+        actions = QHBoxLayout()
+        self.progress_label = QLabel("准备就绪")
+        self.progress_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.progress_label.setWordWrap(True)
+        self.progress_label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        actions.addWidget(self.progress_label, 1)
+        self.log_button = QPushButton("查看日志")
+        self.log_button.setCheckable(True)
+        actions.addWidget(self.log_button)
+        self.cancel_button = QPushButton("取消")
+        self.cancel_button.setEnabled(False)
+        self.cancel_button.clicked.connect(self.cancel_conversion)
+        actions.addWidget(self.cancel_button)
         self.start_button = QPushButton("开始转换")
         self.start_button.setObjectName("startButton")
         self.start_button.clicked.connect(self.start_conversion)
-        control_layout.addWidget(self.start_button)
-
-        self.cancel_button = QPushButton("取消")
-        self.cancel_button.setObjectName("cancelButton")
-        self.cancel_button.setEnabled(False)  # 初始状态不可用
-        self.cancel_button.clicked.connect(self.cancel_conversion)
-        control_layout.addWidget(self.cancel_button)
-
-        control_layout.addStretch()
-        layout.addLayout(control_layout)
-
-        # 进度区域
-        progress_group = QGroupBox("进度")
-        progress_layout = QVBoxLayout(progress_group)
-        progress_layout.setSpacing(30)
-        progress_layout.setContentsMargins(15, 20, 15, 15)
-
+        actions.addWidget(self.start_button)
+        footer_layout.addLayout(actions)
         self.progress_bar = QProgressBar()
         self.progress_bar.setValue(0)
-        self.progress_label = QLabel("准备就绪")
-        self.progress_label.setAlignment(Qt.AlignCenter)
+        self.progress_bar.setMaximumHeight(14)
+        footer_layout.addWidget(self.progress_bar)
         self.log_text = QTextEdit()
-        self.log_text.setMaximumHeight(150)
         self.log_text.setReadOnly(True)
-
-        progress_layout.addWidget(self.progress_bar)
-        progress_layout.addWidget(self.progress_label)
-        progress_layout.addWidget(self.log_text)
-
-        layout.addWidget(progress_group)
-
-        return tab
+        self.log_text.setMaximumHeight(118)
+        self.log_text.hide()
+        self.log_button.toggled.connect(self.log_text.setVisible)
+        self.log_button.toggled.connect(
+            lambda shown: self.log_button.setText("收起日志" if shown else "查看日志"))
+        footer_layout.addWidget(self.log_text)
+        page_layout.addWidget(footer)
+        return page
 
     def create_about_tab(self):
         """创建关于选项卡"""
@@ -1484,43 +1236,22 @@ class ModernUI(QMainWindow):
         return tab
 
     def browse_input(self):
-        """浏览输入路径"""
-
-        # 使用标准QMessageBox，但修改按钮文本
-        msg_box = QMessageBox(
-            QMessageBox.Question,
-            "选择类型",
-            "批量转换同一目录下所有文档请选择文件夹，转换单个或多个文档请选择文件。",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
-            self
+        paths, _ = QFileDialog.getOpenFileNames(
+            self, "选择文件", "",
+            "文档文件 (*.docx *.txt *.md *.srt *.ass *.ssa *.lrc *.epub *.pdf);;所有文件 (*)"
         )
+        if paths:
+            self.choose_paths(paths)
 
-        # 修改按钮文本
-        yes_button = msg_box.button(QMessageBox.StandardButton.Yes)
-        no_button = msg_box.button(QMessageBox.StandardButton.No)
-        cancel_button = msg_box.button(QMessageBox.StandardButton.Cancel)
-        yes_button.setText("选择文件夹")
-        no_button.setText("选择文件")
-        cancel_button.setText("取消")
-
-        # 显示对话框并等待用户选择
-        choice = msg_box.exec()
-
-        if choice == QMessageBox.StandardButton.Yes:  # 文件夹
-            path = QFileDialog.getExistingDirectory(self, "选择输入文件夹")
-            if path:
-                self.choose_paths([path])
-        elif choice == QMessageBox.StandardButton.No:  # 文件
-            paths, _ = QFileDialog.getOpenFileNames(
-                self, "选择文件", "",
-                "文档文件 (*.docx *.txt *.md *.srt *.ass *.ssa *.lrc *.epub *.pdf);;所有文件 (*)"
-            )
-            if paths:
-                self.choose_paths(paths)
+    def browse_input_folder(self):
+        path = QFileDialog.getExistingDirectory(self, "选择输入文件夹")
+        if path:
+            self.choose_paths([path])
 
     def on_input_edited(self):
         """用户手动编辑输入框时，清空多选文件列表"""
         self.selected_files = []
+        self.source_summary.hide()
         # 如果当前显示的是多选占位文本，清空输入框以避免状态不同步
         text = self.input_edit.text()
         if text.startswith("已选择 ") and text.endswith(" 个文件"):
@@ -1618,17 +1349,7 @@ class ModernUI(QMainWindow):
             if dialog.exec() != QMessageBox.StandardButton.Yes:
                 return
 
-        # 获取转换类型
-        conversion_types = {
-            "繁体转规范繁体": "t2gov",
-            "繁体旧字形转新字形，但保留异体字不转换": "t2new",
-            "繁体转规范繁体，但保留文档内原有简体字": "t2gov_keep_simp",
-            "繁体旧字形转新字形，但保留文档内原有简体字和异体字": "t2new_keep_simp",
-            "繁体转简体": "t2s",
-            "只将异体字转为简体字": "v2s",
-            "简体转规范繁体": "s2t"
-        }
-        conversion_type = conversion_types[self.type_combo.currentText()]
+        conversion_type = CONVERSION_TYPES[self.type_combo.currentText()]
 
         # 获取转换选项的实际值
         preserve_format = self.preserve_format_cb.isChecked()
@@ -1707,16 +1428,20 @@ class ModernUI(QMainWindow):
         self.cancel_button.setEnabled(False)  # 转换完成后禁用取消按钮
 
         if success:
-            QMessageBox.information(self, "成功", message)
+            self.progress_label.setText(f"已转换 {success_count}/{total_files} 个文件")
             self.statusBar().showMessage("转换完成")
         else:
             if "取消" in message or "已取消" in message:
                 QMessageBox.information(self, "已取消", "转换已被用户取消")
                 self.statusBar().showMessage("转换已取消")
             elif "部分" in message:
+                self.log_button.setChecked(True)
+                self.progress_label.setText("部分转换失败")
                 QMessageBox.warning(self, "部分失败", f"成功转换 {success_count}/{total_files} 个文件，部分文件转换失败")
                 self.statusBar().showMessage("部分转换失败")
             else:
+                self.log_button.setChecked(True)
+                self.progress_label.setText("转换失败，请查看日志")
                 QMessageBox.critical(self, "错误", message)
                 self.statusBar().showMessage("转换失败")
 
