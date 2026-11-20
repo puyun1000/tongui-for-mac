@@ -30,6 +30,23 @@ from epub_converter import convert_epub_file
 from pdf_converter import convert_pdf_file
 import jieba
 
+
+def collect_supported_files(input_path, exclude_path=None):
+    """Return sorted relative paths, skipping nested output directories."""
+    exclude = os.path.realpath(exclude_path) if exclude_path else None
+    result = []
+    for root, dirs, files in os.walk(input_path):
+        dirs[:] = sorted(
+            (d for d in dirs
+             if not exclude or os.path.realpath(os.path.join(root, d)) != exclude),
+            key=str.lower)
+        for name in sorted(files, key=str.lower):
+            path = os.path.join(root, name)
+            if os.path.splitext(name)[1].lower() in SUPPORTED_EXTENSIONS and os.path.isfile(path):
+                result.append(os.path.relpath(path, input_path))
+    return result
+
+
 class ConversionWorker(QThread):
     """
     转换工作线程，避免UI阻塞
@@ -40,7 +57,7 @@ class ConversionWorker(QThread):
 
     def __init__(self, input_path, output_folder, conversion_type='t2gov', preserve_format=True,
                  convert_footnotes=True, force_encoding=None, segment_mode=None, input_paths=None,
-                 highlight_pdf=False):
+                 highlight_pdf=False, output_folders=None):
         super().__init__()
         self.input_path = input_path
         self.output_folder = output_folder
@@ -50,6 +67,7 @@ class ConversionWorker(QThread):
         self.force_encoding = force_encoding
         self.segment_mode = segment_mode
         self.input_paths = input_paths
+        self.output_folders = output_folders
         self.highlight_pdf = highlight_pdf
         self._is_cancelled = False
 
@@ -117,12 +135,13 @@ class ConversionWorker(QThread):
                 progress = int((i / total_files) * 100)
                 self.progress_updated.emit(progress, f"处理文件 {i}/{total_files}: {os.path.basename(file_path)}")
 
+                output_folder = self.output_folders[i - 1] if self.output_folders else self.output_folder
                 file_ext = os.path.splitext(file_path)[1].lower()
 
                 if file_ext == '.docx':
                     try:
                         result = convert_docx_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             self.preserve_format,
                             self.convert_footnotes,
                             lambda msg: self.log_message.emit(msg),
@@ -135,7 +154,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.txt':
                     if convert_txt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled,
                         self.force_encoding,
@@ -145,7 +164,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.md':
                     if convert_txt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -153,7 +172,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.srt':
                     if convert_srt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -161,7 +180,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext in ['.ass', '.ssa']:
                     if convert_ass_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -169,7 +188,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.lrc':
                     if convert_lrc_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -178,7 +197,7 @@ class ConversionWorker(QThread):
                 elif file_ext == '.epub':
                     try:
                         if convert_epub_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             lambda msg: self.log_message.emit(msg),
                             lambda: self._is_cancelled
                         ):
@@ -189,7 +208,7 @@ class ConversionWorker(QThread):
                 elif file_ext == '.pdf':
                     try:
                         if convert_pdf_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             lambda msg: self.log_message.emit(msg),
                             lambda: self._is_cancelled,
                             self.highlight_pdf
@@ -318,19 +337,12 @@ class ConversionWorker(QThread):
 
         # 处理文件夹
         elif os.path.isdir(self.input_path):
-            # 获取所有支持的文件
-            supported_files = []
-            for f in os.listdir(self.input_path):
-                # 检查是否已取消
-                if self._is_cancelled:
-                    return False
-
-                file_ext = os.path.splitext(f)[1].lower()
-                if file_ext in ['.docx', '.txt', '.md', '.srt', '.ass', '.ssa', '.lrc', '.epub', '.pdf']:
-                    supported_files.append(f)
+            supported_files = collect_supported_files(self.input_path, self.output_folder)
+            if self._is_cancelled:
+                return False
 
             if not supported_files:
-                self.log_message.emit("在指定文件夹中未找到支持的docx、txt、md、srt、ass、ssa、lrc、epub、pdf文件")
+                self.log_message.emit("在指定文件夹（含子文件夹）中未找到支持的docx、txt、md、srt、ass、ssa、lrc、epub、pdf文件")
                 return False
 
             self.log_message.emit(f"找到 {len(supported_files)} 个文件待处理")
@@ -347,13 +359,14 @@ class ConversionWorker(QThread):
                 self.progress_updated.emit(progress, f"处理文件 {i}/{total_files}: {filename}")
 
                 file_path = os.path.join(self.input_path, filename)
+                output_folder = os.path.join(self.output_folder, os.path.dirname(filename))
                 file_ext = os.path.splitext(filename)[1].lower()
 
                 if file_ext == '.docx':
                     # 对于docx文件，使用转换器类
                     try:
                         result = convert_docx_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             self.preserve_format,
                             self.convert_footnotes,
                             lambda msg: self.log_message.emit(msg),
@@ -367,7 +380,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.txt':
                     if convert_txt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled,
                         self.force_encoding,
@@ -377,7 +390,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.md':
                     if convert_txt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -385,7 +398,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.srt':
                     if convert_srt_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -393,7 +406,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext in ['.ass', '.ssa']:
                     if convert_ass_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -401,7 +414,7 @@ class ConversionWorker(QThread):
 
                 elif file_ext == '.lrc':
                     if convert_lrc_file(
-                        file_path, self.output_folder, self.conversion_type,
+                        file_path, output_folder, self.conversion_type,
                         lambda msg: self.log_message.emit(msg),
                         lambda: self._is_cancelled
                     ):
@@ -410,7 +423,7 @@ class ConversionWorker(QThread):
                 elif file_ext == '.epub':
                     try:
                         if convert_epub_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             lambda msg: self.log_message.emit(msg),
                             lambda: self._is_cancelled
                         ):
@@ -421,7 +434,7 @@ class ConversionWorker(QThread):
                 elif file_ext == '.pdf':
                     try:
                         if convert_pdf_file(
-                            file_path, self.output_folder, self.conversion_type,
+                            file_path, output_folder, self.conversion_type,
                             lambda msg: self.log_message.emit(msg),
                             lambda: self._is_cancelled,
                             self.highlight_pdf
@@ -1098,7 +1111,7 @@ class ModernUI(QMainWindow):
         layout = QVBoxLayout(content)
         layout.setContentsMargins(24, 20, 24, 20)
         layout.setSpacing(15)
-        self.page_heading(layout, "文件转换", "选择单个文件、多个文件或一个文件夹。转换结果另存到指定位置。")
+        self.page_heading(layout, "文件转换", "选择文件或文件夹（含全部子文件夹）。转换结果另存到指定位置。")
 
         source = QGroupBox("1. 选择来源")
         source_layout = QVBoxLayout(source)
@@ -1151,7 +1164,7 @@ class ModernUI(QMainWindow):
         browse.clicked.connect(self.browse_output)
         row.addWidget(browse)
         output_layout.addLayout(row)
-        hint = QLabel("输出文件名自动加上 convert_ 前缀。")
+        hint = QLabel("输出文件名加上 convert_ 前缀；文件夹转换保留原有目录结构。")
         hint.setObjectName("muted")
         output_layout.addWidget(hint)
         layout.addWidget(output)
@@ -1292,12 +1305,10 @@ class ModernUI(QMainWindow):
             if self.selected_files:
                 source_paths = list(self.selected_files)
             elif os.path.isdir(input_path):
-                with os.scandir(input_path) as entries:
-                    source_paths = [
-                        entry.path for entry in entries
-                        if os.path.splitext(entry.name)[1].lower() in SUPPORTED_EXTENSIONS
-                        and entry.is_file()
-                    ]
+                source_paths = [
+                    os.path.join(input_path, rel)
+                    for rel in collect_supported_files(input_path, output_path)
+                ]
             else:
                 source_paths = [input_path]
 
@@ -1309,7 +1320,13 @@ class ModernUI(QMainWindow):
                 QMessageBox.warning(self, "没有可转换文件", "请选择受支持的文档或包含受支持文档的文件夹。")
                 return
 
-            names = [f"convert_{os.path.basename(path)}" for path in source_paths]
+            folder_mode = not self.selected_files and os.path.isdir(input_path)
+            names = [
+                os.path.join(os.path.dirname(os.path.relpath(path, input_path)),
+                             f"convert_{os.path.basename(path)}")
+                if folder_mode else f"convert_{os.path.basename(path)}"
+                for path in source_paths
+            ]
             # macOS 常用文件系统可能忽略大小写和 Unicode 组合形式。
             name_keys = {normalize("NFC", name).casefold() for name in names}
             if len(names) != len(name_keys):
@@ -1320,6 +1337,12 @@ class ModernUI(QMainWindow):
             existing = []
             for name in names:
                 destination = os.path.join(output_path, name)
+                parent = os.path.dirname(os.path.abspath(destination))
+                while parent != os.path.abspath(output_path):
+                    if os.path.islink(parent) or (os.path.exists(parent) and not os.path.isdir(parent)):
+                        QMessageBox.warning(self, "输出路径冲突", f"请选择其他输出文件夹：{name}")
+                        return
+                    parent = os.path.dirname(parent)
                 if not os.path.lexists(destination):
                     continue
                 if os.path.islink(destination) or not os.path.isfile(destination):
@@ -1395,6 +1418,7 @@ class ModernUI(QMainWindow):
             force_encoding,
             segment_mode,
             input_paths=source_paths,
+            output_folders=[os.path.dirname(os.path.join(output_path, name)) for name in names],
             highlight_pdf=highlight_pdf
         )
         self.worker.progress_updated.connect(self.update_progress)

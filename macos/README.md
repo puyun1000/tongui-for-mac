@@ -1,15 +1,15 @@
-# 规范繁体字形转换器 for Mac 1.4.8
+# 规范繁体字形转换器 for Mac 1.4.9
 
-本版基于 [TerryTian-tech 的 OpenCC 项目](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards) 1.4.8，并同步上游截至 2026-11-08 的 `main`（`64130dbf0f1d73b64243c31869064e564c138fe1`）。
+本版基于 [TerryTian-tech 的 OpenCC 项目](https://github.com/TerryTian-tech/OpenCC-Traditional-Chinese-characters-according-to-Chinese-government-standards) 1.4.9，并同步上游截至 2026-11-20 的 `main`（`ba9901d757db41f30c94aafc9db424fb05b67d8b`）。
 
 ## 目标用户与界面
 
-面向编辑、出版校对、字幕和电子书制作者，以及需要按《通用规范汉字表》处理繁体字形的研究者。应用采用 macOS 桌面窗口，提供“文件转换”“文字转换”“设置”“关于”四个标签页，支持拖入文件与 Finder“打开方式”。
+面向编辑、出版校对、字幕和电子书制作者，以及需要按《通用规范汉字表》处理繁体字形的研究者。应用采用 macOS 桌面窗口，提供“文件转换”“文字转换”“设置”“关于”四个侧边栏入口，支持拖入文件与 Finder“打开方式”。
 
 - **文件转换**：批量处理 DOCX、TXT、MD、SRT、ASS/SSA、LRC、EPUB，以及带文本层的 PDF；输出至指定文件夹。
 - **文字转换**：选择七种转换规则；一对多歧义会以红色波浪线标注，点击可查看并手动选择候选字。支持复制和清空。
 - **文件选项**：DOCX 保留格式并可选择转换脚注/尾注；PDF 可标记变更；文本文件可指定编码；文件转换可选择现代或古汉语分词模式。
-- **1.4.8**：覆盖前列出同名输出并请求确认。文字转换模块同步上游整理，并加入“干的”的候选。
+- **1.4.9**：覆盖前列出同名输出并请求确认。文字转换模块同步上游整理，并加入“干的”的候选。
 
 转换工具适合校对辅助，成稿仍需人工审校。PDF 通过提取文本并重建页面，版式可能变化；无文本层的扫描 PDF 无法转换。加密 EPUB、旧版 `.doc` 和独立 LLMCC AI 模块不包含在本 Mac 版中。
 
@@ -36,6 +36,6 @@ dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 
 ## 分发
 
-输出文件为 `dist/TongguiMac-1.4.8-macOS27-arm64.dmg`，镜像中包含应用、许可说明和第三方许可。目标为 Apple Silicon，当前最低系统要求是 macOS 27。应用使用 ad-hoc 签名，未经过 Apple 公证；公开分发如需无提示安装，应使用开发者证书重新签名并完成公证。
+输出文件为 `dist/TongguiMac-1.4.9-macOS27-arm64.dmg`，镜像中包含应用、许可说明和第三方许可。目标为 Apple Silicon，当前最低系统要求是 macOS 27。应用使用 ad-hoc 签名，未经过 Apple 公证；公开分发如需无提示安装，应使用开发者证书重新签名并完成公证。
 
 上游源码和 Apache-2.0 许可保留在仓库中；第三方依赖许可见 `THIRD_PARTY_NOTICES.md` 与 `third_party_licenses/`。
