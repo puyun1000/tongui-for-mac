@@ -78,6 +78,30 @@ def run():
         result.unlink()
         print("Hard-linked original protection: OK")
 
+
+        import shutil
+        shutil.rmtree(output / "甲")
+        outside = root / "outside"
+        outside.mkdir()
+        (output / "甲").symlink_to(outside, target_is_directory=True)
+        with patch.object(QMessageBox, "warning", return_value=QMessageBox.StandardButton.Ok) as warning:
+            previous = window.worker
+            window.start_conversion()
+            assert window.worker is previous
+            assert warning.call_args.args[1] == "输出路径冲突"
+        assert not list(outside.iterdir())
+        (output / "甲").unlink()
+        print("Symbolic-link output directory protection: OK")
+
+        window.selected_files = [str(source / "甲/同名.txt"), str(source / "乙/深层/同名.txt")]
+        with patch.object(QMessageBox, "warning", return_value=QMessageBox.StandardButton.Ok) as warning:
+            previous = window.worker
+            window.start_conversion()
+            assert window.worker is previous
+            assert warning.call_args.args[1] == "文件重名"
+        window.selected_files = []
+        print("Multi-file flat-output duplicate protection: OK")
+
         # Direct worker folder entry follows the same recursive behavior.
         direct = root / "direct"
         worker = main.ConversionWorker(str(source), str(direct))

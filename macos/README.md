@@ -31,6 +31,7 @@
 .venv/bin/python self_test.py
 .venv/bin/python verify_ambiguity.py
 .venv/bin/python verify_formats.py
+QT_QPA_PLATFORM=offscreen .venv/bin/python verify_batch.py
 dist/TongguiMac.app/Contents/MacOS/TongguiMac --self-test
 ```
 
