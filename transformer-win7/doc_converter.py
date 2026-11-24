@@ -447,31 +447,20 @@ class DocxTraditionalSimplifiedConverter:
                     os.remove(temp_output)
                 return None
 
-            # 转换页眉
+            # 只处理已定义的页眉和页脚。访问链接分节的段落会在
+            # 没有可继承定义时创建空白部件，也可能重复转换同一部件。
             for section in doc.sections:
-                self._convert_paragraphs(section.header.paragraphs)
-                # 转换页眉中的表格
-                if hasattr(section.header, 'tables') and section.header.tables:
-                    self._convert_tables(section.header.tables)
-
-                # 检查是否已取消
-                if self.is_cancelled_callback and self.is_cancelled_callback():
-                    if temp_output and os.path.exists(temp_output):
-                        os.remove(temp_output)
-                    return None
-
-            # 转换页脚
-            for section in doc.sections:
-                self._convert_paragraphs(section.footer.paragraphs)
-                # 转换页脚中的表格
-                if hasattr(section.footer, 'tables') and section.footer.tables:
-                    self._convert_tables(section.footer.tables)
-
-                # 检查是否已取消
-                if self.is_cancelled_callback and self.is_cancelled_callback():
-                    if temp_output and os.path.exists(temp_output):
-                        os.remove(temp_output)
-                    return None
+                for region in (
+                    section.header, section.first_page_header, section.even_page_header,
+                    section.footer, section.first_page_footer, section.even_page_footer,
+                ):
+                    if self.is_cancelled_callback and self.is_cancelled_callback():
+                        if temp_output and os.path.exists(temp_output):
+                            os.remove(temp_output)
+                        return None
+                    if not region.is_linked_to_previous:
+                        self._convert_paragraphs(region.paragraphs)
+                        self._convert_tables(region.tables)
 
             # 保存最终文档
             doc.save(output_path)
@@ -690,7 +679,7 @@ class DocxTraditionalSimplifiedConverter:
 
 
 def convert_docx_file(input_path, output_folder, conversion_type, preserve_format=True, convert_footnotes=True,
-                      log_callback=None, is_cancelled_callback=None):
+                      log_callback=None, is_cancelled_callback=None, keep_original_name=False):
     """
     将Word文档转换为简体/繁体
     :param input_path: 输入文件路径
@@ -700,6 +689,7 @@ def convert_docx_file(input_path, output_folder, conversion_type, preserve_forma
     :param convert_footnotes: 是否转换脚注
     :param log_callback: 日志回调函数
     :param is_cancelled_callback: 取消检查回调函数
+    :param keep_original_name: 输出文件名是否与原文件名一致（不加 convert_ 前缀）
     :return: 转换后的文件路径
     """
     def log(msg):
@@ -730,7 +720,9 @@ def convert_docx_file(input_path, output_folder, conversion_type, preserve_forma
             # 使用新的转换器类
             converter = DocxTraditionalSimplifiedConverter(log_callback, is_cancelled_callback, conversion_type,
                                                             preserve_format, convert_footnotes)
-            output_path = os.path.join(output_folder, f"convert_{os.path.basename(input_path)}")
+            # 文件名与原文件一致时不加 convert_ 前缀（DOC 转换的临时文件名为 a.doc.docx，输出相应为 a.doc.docx）
+            output_name = os.path.basename(input_path) if keep_original_name else f"convert_{os.path.basename(input_path)}"
+            output_path = os.path.join(output_folder, output_name)
             result = converter.convert_document(input_path, output_path)
 
             if result:

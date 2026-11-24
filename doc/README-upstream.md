@@ -136,7 +136,7 @@ python3 main.py
 
 * [regexp-replace-lists-for-TextPro](https://github.com/Fusyong/regexp-replace-lists-for-TextPro)  维护者：[Huang Fusyong](https://github.com/Fusyong)
 
-* [telegram-zh-Hant-CN](https://github.com/soizo/telegram-zh-Hant-CN)  维护者：[SoizoKtantas](https://github.com/soizo)
+* [telegram-zh-hant-cn](https://github.com/soizo/telegram-zh-hant-cn)  维护者：[SoizoKtantas](https://github.com/soizo)
 
 * [Mainland_Traditional_Chinese_Converter](https://github.com/Xebec33/Mainland_Traditional_Chinese_Converter)  维护者：[Xebec33](https://github.com/Xebec33)
 
@@ -147,12 +147,12 @@ python3 main.py
 | 组件 | 版本 | 说明 |
 |-----|------|-----|
 | [OpenCC](https://github.com/BYVoid/OpenCC) | 1.4.2 | 开源中文繁简转换库 |
-| [LLMCC](https://github.com/TerryTian-tech/LLMCC) | 0.3.1 | 「规范繁体字形转换器」AI繁简转换独立模块 |
+| [LLMCC](https://github.com/TerryTian-tech/LLMCC) | 0.3.3 | 「规范繁体字形转换器」AI繁简转换独立模块 |
 | [Python-docx](https://github.com/python-openxml/python-docx) | 1.2.0 | Word 文档处理库 |
 | [Pywin32](https://github.com/mhammond/pywin32) | 312 | Python for Win32 扩展 |
 | [PySide6](https://www.qt.io/qt-for-python) | 6.11.2 | Qt for Python GUI 框架 |
 | [Chardet](https://github.com/chardet/chardet) | 7.7.0 | 字符编码检测库 |
-| [Certifi](https://pypi.org/project/certifi/) | 2026.10.23 | Mozilla 根证书库 |
+| [Certifi](https://pypi.org/project/certifi/) | 2026.11.20 | Mozilla 根证书库 |
 | [Beautifulsoup4](https://pypi.org/project/beautifulsoup4/) | 4.15.0 | HTML和XML文档解析库 |
 | [lxml](https://github.com/lxml/lxml) | 6.1.3 | 大型文档和XML处理库 |
 | [pdf-oxide](https://pypi.org/project/pdf-oxide/) | 0.3.78 | PDF 文件解析与重建库 |
@@ -163,11 +163,15 @@ python3 main.py
 
 ## Contributors 开源贡献者
 
-由于本仓库同时在 [Gitee](https://gitee.com/terrytian-tech/tonggui-traditional-chinese) 和 [GitCode](https://gitcode.com/TerryTian-tech/OpenCC-Tonggui-Traditional-Chinese) 平台托管，特此将所有平台的开源贡献者列表如下：
+由于本仓库同时在 [Gitee](https://gitee.com/terrytian-tech/tonggui-traditional-chinese) 和 [GitCode](https://gitcode.com/TerryTian-tech/OpenCC-Tonggui-Traditional-Chinese) 平台托管，特此将所有平台的开源贡献者列表如下。此处不仅限于提交PR的贡献者，提交优质Issue和其他贡献者也列入其中。
 
 * [TerryTian-tech](https://github.com/TerryTian-tech)
 
 * [FranksLin](https://github.com/frankslin)
+
+* [萧苏晏](https://github.com/puyun1000)
+
+* [SoizoKtantas](https://github.com/soizo)
 
 ## 许可协议
 
