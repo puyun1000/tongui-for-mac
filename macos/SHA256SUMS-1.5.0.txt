@@ -1,0 +1,4 @@
+7639400d3374941879be14dbec20fdacd16e46303a308787ee1eaac4d5edcee0  TongguiMac-1.5.0-macOS27-arm64.dmg
+83f16146e926b26984fd9ad021bd82f82ae7cb96a8696c655fd4ed57cce70b4f  TongguiMac-1.5.0-third-party-licenses.zip
+0bf35720048e5d4ccc547a0e12b1091b741627b369312dd0409b5c2975f73271  BinaryDeploymentTargets.json
+b260fe18819751f9093104811a7888a3a216f4bf20435d5cfbc4dfea9d68082a  Validation-1.5.0.md
